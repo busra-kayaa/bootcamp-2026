@@ -6,14 +6,14 @@
 * **Task 3:** Sprint 1 review ve retro toplantılarının yapılıp raporlanması.
 
 **Frontend (Arayüz)**
-* **Task 4:** React/Next.js kullanılarak temel frontend projesinin başlatılması.
+* **Task 4:** Temel frontend projesinin başlatılması ve proje iskeletinin kurulması.
 * **Task 5:** Kullanıcının şartname PDF'ini yükleyebileceği veya metin girebileceği basit ekran tasarımının kodlanması.
-* **Task 6:** Backend'den gelen analiz sonuçlarının gösterileceği arayüz bileşenlerinin oluşturulması.
+* **Task 6:** Backend'den gelen analiz sonuçlarının ekranda düzgün bir şekilde gösterileceği arayüz bileşenlerinin oluşturulması.
 
 **Backend & AI Pipeline**
-* **Task 7:** FastAPI ile backend projesinin başlatılması ve PDF parse endpoint'inin (pdfplumber/PyMuPDF) yazılması.
-* **Task 8:** LLM'e gitmeden önce veriyi temizlemek için Regex tabanlı hibrit bir NLP normalizasyon motorunun entegre edilmesi.
-* **Task 9:** Büyük metinlerin gecikmesiz işlenmesi için asenkron yapı ve gerçek zamanlı veri akışı (streaming) mimarisinin kurulması.
-* **Task 10:** Requirement, Idea, Backlog Agent'ları için ilk prompt mimarilerinin tasarlanıp test edilmesi.
-* **Task 11:** RAG sistemi için dokümanların chunking (parçalama) ve embedding işlemlerinin yapılması.
-* **Task 12:** Sistemin ana karar mekanizması için Llama 3.1 8B modelinin QLoRA ve Unsloth ile fine-tune edilmesi amacıyla veri seti hazırlıklarına başlanması.
+* **Task 7:** API altyapısının kurularak backend projesinin başlatılması ve PDF/metin okuma endpoint'inin yazılması.
+* **Task 8:** Yapay zekaya gitmeden önce veriyi temizlemek ve düzenlemek için metin ön işleme (text preprocessing) adımlarının eklenmesi.
+* **Task 9:** Uygulamanın hızlı çalışabilmesi için asenkron backend mimarisinin tasarlanması.
+* **Task 10:** Şartname analizi ve fikir üretme gibi temel AI görevleri için ilk prompt tasarımlarının yapılıp test edilmesi.
+* **Task 11:** RAG (Retrieval-Augmented Generation) altyapısı için dokümanları parçalama (chunking) ve aranabilir hale getirme (embedding) hazırlıklarının yapılması.
+* **Task 12:** Seçilecek yapay zeka modelinin projeye en uygun cevapları üretebilmesi için gerekli test ve iyileştirmelerin yapılması.
