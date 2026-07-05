@@ -36,3 +36,58 @@ SprintMate AI, yarışma şartnamelerini analiz ederek takımlara proje fikri, b
 ## Product Backlog URL
 [Proje GitHub Reposu - Grup 57](https://github.com/busra-kayaa/bootcamp-2026)
 *(Ayrıntılı görev dağılımı ve iş listesi repo içerisindeki `docs/product_backlog.md` dosyasında yer almaktadır.)*
+
+## 📌 Sprint 1 Bilgileri (05 Temmuz 2026)
+
+**Sprint Hedefi:** İlk çalışan iskeletin (MVP) ve proje vizyonunun kurulması. Hedeflenen kapsama %100 ulaşıldı.
+
+### 📖 Kullanıcı Hikayeleri (User Stories)
+1. Bir yarışma katılımcısı olarak şartname PDF’ini yüklemek istiyorum, böylece önemli kuralları hızlıca görebileyim.
+2. Bir takım üyesi olarak şartnameye uygun proje fikirleri görmek istiyorum, böylece fikir aşamasında zaman kaybetmeyeyim.
+3. Bir Scrum Master olarak product backlog ve sprint planı almak istiyorum, böylece ekibin iş dağılımını daha hızlı yapabileyim.
+4. Bir Product Owner olarak riskleri görmek istiyorum, böylece kapsamı gereğinden fazla büyütmeden karar verebileyim.
+5. Bir geliştirici olarak GitHub issue formatında görev almak istiyorum, böylece doğrudan geliştirmeye başlayabileyim.
+6. Bir takım üyesi olarak önerilen projelerin artı/eksi ve AI katkısı puanlarını görmek istiyorum, böylece fikirler arasında kolayca seçim yapabileyim.
+7. Bir yarışma takımı üyesi olarak README taslağı ve final demo anlatısı almak istiyorum, böylece dokümantasyon süreçlerini hızlandırabileyim.
+8. Bir kullanıcı olarak yapay zeka çıktılarının şartnamedeki hangi bölüme dayandığını (kaynak) görmek istiyorum, böylece güvenilirlik sağlayabileyim.
+
+### 📋 Product Backlog
+**Proje Yönetimi & Dokümantasyon**
+* **Task 1:** GitHub repository klasör yapısının (`frontend`, `backend`, `docs`) oluşturulması.
+* **Task 2:** Proje vizyonu, user story'ler ve hedef kitlenin belgelenmesi.
+* **Task 3:** Sprint 1 review ve retro toplantılarının yapılıp raporlanması.
+
+**Frontend (Arayüz)**
+* **Task 4:** Temel frontend projesinin başlatılması ve proje iskeletinin kurulması.
+* **Task 5:** Kullanıcının şartname PDF'ini yükleyebileceği veya metin girebileceği basit ekran tasarımının kodlanması.
+* **Task 6:** Backend'den gelen analiz sonuçlarının ekranda düzgün bir şekilde gösterileceği arayüz bileşenlerinin oluşturulması.
+
+**Backend & AI Pipeline**
+* **Task 7:** API altyapısının kurularak backend projesinin başlatılması ve PDF/metin okuma endpoint'inin yazılması.
+* **Task 8:** Yapay zekaya gitmeden önce veriyi temizlemek ve düzenlemek için metin ön işleme (text preprocessing) adımlarının eklenmesi.
+* **Task 9:** Uygulamanın hızlı çalışabilmesi için asenkron backend mimarisinin tasarlanması.
+* **Task 10:** Şartname analizi ve fikir üretme gibi temel AI görevleri için ilk prompt tasarımlarının yapılıp test edilmesi.
+* **Task 11:** RAG (Retrieval-Augmented Generation) altyapısı için dokümanları parçalama (chunking) ve aranabilir hale getirme (embedding) hazırlıklarının yapılması.
+* **Task 12:** Seçilecek yapay zeka modelinin projeye en uygun cevapları üretebilmesi için gerekli test ve iyileştirmelerin yapılması.
+
+---
+
+### 🔍 Sprint 1 - Review Toplantısı
+* **Tarih:** 04 Temmuz 2026
+* **Tamamlanan İşler:**
+  - Ürün vizyonu, User Stories ve 12 maddelik Product Backlog oluşturuldu.
+  - React tabanlı basit PDF yükleme arayüzü çıkarıldı.
+  - FastAPI üzerinde metin/PDF alma ve NLP normalizasyon endpoint'i yazıldı.
+  - Requirement ve Idea agent'ları için ilk prompt denemeleri belgelendi.
+* **Tamamlanamayan İşler veya Karşılaşılan Sorunlar (Blockers):**
+  - Sprint 1 kapsamında tamamlanamayan iş veya süreci tıkayan herhangi bir blocker yaşanmamıştır.
+
+### 🔄 Sprint 1 - Retrospective Toplantısı
+* **Tarih:** 04 Temmuz 2026
+* **Neleri İyi Yaptık?**
+  - Ekip içi görev dağılımını (Scrum Master, Product Owner, Developer) hızlıca benimsedik ve 5 Temmuz deadline'ına tüm temel doküman ve repo altyapısını yetiştirmeyi başardık.
+* **Neleri Geliştirmeliyiz?**
+  - Backend ve AI model entegrasyonlarını yerleştirirken teknik detayları repoda daha sık güncellemeli ve GitHub commit sayılarını artırmalıyız. Kodları lokalde tutup toplu pushlamak yerine parça parça gönderme alışkanlığı kazanmalıyız.
+* **Aksiyon Planı:**
+  - **Teknik:** Sprint 2'de asenkron LLM çağrılarına ve RAG altyapısının kodlanmasına başlanacak.
+  - **Süreç:** Takım üyeleri yazdıkları kodları ve dokümanları "Done" aşamasına çekerken günlük olarak GitHub'a commit atacak.
