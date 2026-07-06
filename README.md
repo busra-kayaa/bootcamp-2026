@@ -37,6 +37,8 @@ SprintMate AI, yarışma şartnamelerini analiz ederek takımlara proje fikri, b
 [Proje GitHub Reposu - Grup 57](https://github.com/busra-kayaa/bootcamp-2026)
 *(Ayrıntılı görev dağılımı ve iş listesi repo içerisindeki `docs/product_backlog.md` dosyasında yer almaktadır.)*
 
+---
+
 ## 📌 Sprint 1 Bilgileri (05 Temmuz 2026)
 
 **Sprint Hedefi:** İlk çalışan iskeletin (MVP) ve proje vizyonunun kurulması. Hedeflenen kapsama %100 ulaşıldı.
@@ -91,3 +93,27 @@ SprintMate AI, yarışma şartnamelerini analiz ederek takımlara proje fikri, b
 * **Aksiyon Planı:**
   - **Teknik:** Sprint 2'de asenkron LLM çağrılarına ve RAG altyapısının kodlanmasına başlanacak.
   - **Süreç:** Takım üyeleri yazdıkları kodları ve dokümanları "Done" aşamasına çekerken günlük olarak GitHub'a commit atacak.
+
+---
+
+### 📸 Görsel Kanıtlar (Sprint 1)
+
+<details>
+<summary><b>👉 Sprint 1 Görsellerini Görmek İçin Tıklayın</b></summary>
+
+<br>
+
+**1. Ürün Durumu (Çalışan MVP İskeleti)**
+*Frontend Arayüzü:*
+![Frontend Arayüzü](docs/images/sprint1/urun_durumu_frontend.png)
+
+*Başarılı Analiz Sonucu:*
+![Analiz Sonucu](docs/images/sprint1/urun_durumu_sonuc.png)
+
+*FastAPI Backend Swagger Dokümantasyonu:*
+![FastAPI Backend](docs/images/sprint1/urun_durumu_backend.png)
+
+**2. Sprint Board ve Daily Scrum**
+*(Ekip görev panosu ve günlük toplantı notları buraya eklenecektir.)*
+
+</details>
