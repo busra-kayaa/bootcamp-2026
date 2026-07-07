@@ -113,7 +113,11 @@ SprintMate AI, yarışma şartnamelerini analiz ederek takımlara proje fikri, b
 *FastAPI Backend Swagger Dokümantasyonu:*
 ![FastAPI Backend](docs/images/sprint1/urun_durumu_backend.png)
 
-**2. Sprint Board ve Daily Scrum**
-*(Ekip görev panosu ve günlük toplantı notları buraya eklenecektir.)*
+**2. Sprint Board (Görev Takip Panosu)**
+*Grup 57 - Sprint 1 Jira Board:*
+![Sprint Board](docs/images/sprint1/sprint_board.png)
+
+**3. Daily Scrum (Günlük Toplantı)**
+*(Not: Daily Scrum toplantı ekran görüntüsü buraya eklenecektir.)*
 
 </details>
