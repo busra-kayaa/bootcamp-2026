@@ -117,7 +117,14 @@ SprintMate AI, yarışma şartnamelerini analiz ederek takımlara proje fikri, b
 *Grup 57 - Sprint 1 Jira Board:*
 ![Sprint Board](docs/images/sprint1/sprint_board.png)
 
-**3. Daily Scrum (Günlük Toplantı)**
-*(Not: Daily Scrum toplantı ekran görüntüsü buraya eklenecektir.)*
+**3. Daily Scrum (Günlük Toplantı ve İletişim)**
+*Ekip içi senkronizasyon, görev dağılımı ve toplantı özetleri:*
+
+![Daily Scrum 1](docs/images/sprint1/daily_scrum_1.jpeg)
+![Daily Scrum 2](docs/images/sprint1/daily_scrum_2.jpeg)
+![Daily Scrum 3](docs/images/sprint1/daily_scrum_3.jpeg)
+
+*02.07.2026 Tarihli Sprint Planlama Meet Toplantısı Kaydı:*
+![Meet Log](docs/images/sprint1/meet_log.png)
 
 </details>
