@@ -1,1 +1,1 @@
-"""Backend application package."""
+"""Bootcamp AI backend application package."""
