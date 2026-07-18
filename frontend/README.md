@@ -1,16 +1,102 @@
-# React + Vite
+# SprintMate AI – Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+SprintMate AI frontend uygulaması, kullanıcıların yarışma şartnamelerini yüklemesini ve yapay zekâ tarafından oluşturulan analiz sonuçlarını görüntülemesini sağlayan React tabanlı kullanıcı arayüzüdür.
 
-Currently, two official plugins are available:
+## Kullanılan Teknolojiler
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- React
+- Vite
+- JavaScript
+- CSS
+- Lucide React
 
-## React Compiler
+## Mevcut Özellikler
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- Modern ve responsive kullanıcı arayüzü
+- PDF, TXT, DOC ve DOCX dosyası yükleme
+- Sürükle-bırak dosya yükleme desteği
+- Şartname metnini doğrudan girme
+- Dosya formatı doğrulama
+- Analiz sırasında yükleniyor göstergesi
+- Kritik tarihlerin ve kuralların görüntülenmesi
+- Proje fikirlerinin listelenmesi
+- Risk analizi sonuçlarının gösterilmesi
+- Mobil ve masaüstü cihazlarla uyumlu tasarım
 
-## Expanding the Oxlint configuration
+## Geçici Veri Kullanımı
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and Oxlint's TypeScript related rules in your project.
+Backend ve yapay zekâ entegrasyonu geliştirme aşamasında olduğu için analiz sonuçları şu anda örnek veriler kullanılarak gösterilmektedir.
+
+Örnek veriler şu dosyada bulunmaktadır:
+
+```text
+src/data/mockAnalysis.js
+```
+
+Backend entegrasyonu tamamlandığında geçici veriler gerçek API sonuçlarıyla değiştirilecektir.
+
+## Proje Yapısı
+
+```text
+src/
+├── components/
+│   ├── Navbar.jsx
+│   ├── UploadWorkspace.jsx
+│   └── ResultPanel.jsx
+├── data/
+│   └── mockAnalysis.js
+├── App.jsx
+├── App.css
+├── index.css
+└── main.jsx
+```
+
+## Projeyi Çalıştırma
+
+Frontend klasörüne girin:
+
+```bash
+cd frontend
+```
+
+Gerekli paketleri yükleyin:
+
+```bash
+npm install
+```
+
+Geliştirme sunucusunu başlatın:
+
+```bash
+npm run dev
+```
+
+Terminalde gösterilen bağlantıyı tarayıcıda açın:
+
+```text
+http://localhost:5173
+```
+
+## Production Build
+
+```bash
+npm run build
+```
+
+## Planlanan Backend Akışı
+
+```text
+Doküman yükleme
+      ↓
+Frontend API isteği
+      ↓
+Backend doküman analizi
+      ↓
+Yapılandırılmış JSON sonucu
+      ↓
+Sonuçların arayüzde gösterilmesi
+```
+
+## Takım
+
+Bu proje, Yapay Zekâ ve Teknoloji Akademisi Bootcamp süreci kapsamında Grup 57 tarafından geliştirilmektedir.
