@@ -39,6 +39,38 @@ SprintMate AI, yarışma şartnamelerini analiz ederek takımlara proje fikri, b
 
 ---
 
+## 🚀 Proje Kurulumu ve Çalıştırma Talimatları
+
+### 1. Frontend (Arayüz) Kurulumu
+SprintMate AI frontend uygulaması, kullanıcıların doküman yüklemesini ve analiz sonuçlarını görüntülemesini sağlayan React, Vite ve TailwindCSS/Lucide React tabanlı modern bir arayüzdür.
+
+* **Klasöre girin:** `cd frontend`
+* **Paketleri yükleyin:** `npm install`
+* **Geliştirme sunucusunu başlatın:** `npm run dev`
+* **Tarayıcıda açın:** `http://localhost:5173`
+* **Production Build için:** `npm run build`
+
+> **Not (Geçici Veri Kullanımı):** Backend entegrasyonu tamamlanana kadar, arayüzdeki analiz sonuçları `src/data/mockAnalysis.js` dosyasındaki örnek veriler üzerinden çalışmaktadır.
+
+### 2. Backend (API & Veritabanı) Kurulumu
+Projemiz, FastAPI altyapısı ve **Clean Architecture (Temiz Mimari)** prensipleri kullanılarak asenkron yapıda inşa edilmiştir.
+
+* **Klasöre girin:** `cd backend`
+* **Sanal ortam oluşturun ve aktif edin (Windows PowerShell):**
+  ```powershell
+  python -m venv .venv
+  .\.venv\Scripts\Activate.ps1
+  ```
+* **Gereksinimleri yükleyin:** `python -m pip install -r requirements.txt`
+* **Çevre değişkenlerini ayarlayın:** `Copy-Item .env.example .env`
+* **Veritabanı Tablolarını Oluşturun (Alembic):** `python -m alembic upgrade head`
+* **Sunucuyu başlatın:** `uvicorn app.main:app --reload`
+* **Health Check Endpoint:** `http://127.0.0.1:8000/health`
+* **Swagger API Dokümantasyonu:** `http://127.0.0.1:8000/docs`
+* **Testleri çalıştırmak için:** `pytest`
+
+---
+
 ## 📌 Sprint 1 Bilgileri (05 Temmuz 2026)
 
 **Sprint Hedefi:** İlk çalışan iskeletin (MVP) ve proje vizyonunun kurulması. Hedeflenen kapsama %100 ulaşıldı.
@@ -126,5 +158,100 @@ SprintMate AI, yarışma şartnamelerini analiz ederek takımlara proje fikri, b
 
 *02.07.2026 Tarihli Sprint Planlama Meet Toplantısı Kaydı:*
 ![Meet Log](docs/images/sprint1/meet_log.png)
+
+</details>
+
+---
+
+## 📌 Sprint 2 Bilgileri (19 Temmuz 2026)
+
+**Sprint Hedefi:** Asenkron PostgreSQL veritabanı altyapısının ayağa kaldırılması, API tarafında Clean Architecture (Temiz Mimari) entegrasyonu, arayüzün (Frontend) baştan aşağı yenilenmesi ve AI prompt mimarisinin sisteme dahil edilmesi.
+
+### 📖 Kullanıcı Hikayeleri (User Stories)
+9. Bir geliştirici olarak veritabanı tablolarının asenkron bir şekilde otomatik oluşmasını istiyorum, böylece veri modellerini manuel olarak yönetmekle zaman kaybetmeyeyim.
+10. Bir kullanıcı olarak analiz edilen şartnamenin genel özetini, kritik tarihlerini ve zorunlu kurallarını tek ekranda görmek istiyorum, böylece detaylarda kaybolmayayım.
+11. Bir takım üyesi olarak şartnameye en uygun proje fikirlerini ve AI katkı seviyelerini karşılaştırmalı olarak görmek istiyorum, böylece doğru projeyi seçebileyim.
+12. Bir Product Owner olarak önceden önlem alınması gereken noktaları risk analizi tablosunda görmek istiyorum, böylece projeyi daha güvenli yönetebileyim.
+13. Bir geliştirici olarak backend projesinin katmanlı bir mimaride olmasını istiyorum, böylece kodlarımı daha düzenli ve ölçeklenebilir şekilde geliştirebileyim.
+
+### 📋 Product Backlog & Tamamlanan Görevler
+**Backend, Mimari & Veritabanı**
+* **Task 13:** FastAPI asenkron bağlantısı için gerekli kütüphanelerin sanal ortama (`.venv`) dahil edilmesi.
+* **Task 14:** Backend temiz mimari (Clean Architecture) klasör iskeletinin (`api/routes`, `services`, `repositories`, vb.) oluşturulması ve entegrasyonu.
+* **Task 15:** Veritabanı bağlantı kontrollerinin yapılması ve `models` altında PostgreSQL tablolarını temsil eden SQLAlchemy modellerinin oluşturulması.
+* **Task 16:** Asenkron veritabanı entegrasyonu ve Alembic migrasyonlarının tamamlanması; test ve sağlık (`/health`) endpointlerinin aktif edilmesi. 
+* **Task 17:** Gelişmiş prompt mimarisinin tasarlanarak klasörlere ayrılması ve backend ile entegre edilmesi.
+
+**Frontend & UI Geliştirmeleri**
+* **Task 18:** SprintMate AI frontend arayüzünün (React, Vite, Lucide React) modern tasarıma uygun şekilde tamamen yenilenmesi.
+* **Task 19:** Kullanıcının sürükle-bırak yöntemiyle doküman yükleyebileceği alanların (PDF, TXT, DOC, DOCX) oluşturulması ve dosya formatı doğrulamalarının yapılması.
+* **Task 20:** "Şartname analiz sonuçları", "Proje önerileri" ve "Risk analizi" bileşenlerinin arayüze eklenmesi.
+* **Task 21:** Backend API uçları tamamlanana kadar arayüz geliştirmesinin kesintiye uğramaması adına verilerin geçici bir mock dosyasından (`mockAnalysis.js`) çekilmesi.
+* **Task 22:** Frontend dokümantasyonunun (`README.md`) detaylıca yazılarak güncellenmesi.
+
+### 🔍 Sprint 2 - Review Toplantısı
+* **Tarih:** 19 Temmuz 2026
+* **Tamamlanan İşler:**
+  - Asenkron veritabanı kurulum süreçleri başarıyla aşıldı, modeller ve tablolar Alembic üzerinden veritabanına işlendi.
+  - Kod kalitesini artırmak adına Backend tarafında "Clean Architecture" standartlarına geçildi ve yapılandırma tamamlandı.
+  - Frontend kullanıcı arayüzü sıfırdan yazılarak responsive ve estetik bir forma kavuşturuldu; mock verilerle analiz sonuçları dinamikleştirildi.
+  - Takım içi GitHub PR (Pull Request) kültürü aktif olarak kullanıldı.
+* **Tamamlanamayan İşler veya Karşılaşılan Sorunlar (Blockers):**
+  - Sprint 2 kapsamında bloklayıcı bir sorun yaşanmamış, planlanan tüm hedeflere ulaşılmıştır.
+
+### 🔄 Sprint 2 - Retrospective Toplantısı
+* **Tarih:** 19 Temmuz 2026
+* **Neleri İyi Yaptık?**
+  - Ekip içi iletişim ve teknik dayanışma en üst seviyedeydi. Günlük toplantılar (Daily Scrum) ve WhatsApp koordinasyonu sayesinde herkes diğerinin eksiğini kapattı (Örn: Mock datalarla frontend'in bloklanmadan ilerlemesi).
+  - Klasör yapılarının standartlaşması ve ortam (path) hatalarının takımca analiz edilerek çözülmesi önemli bir teknik kazanım oldu.
+* **Aksiyon Planı:**
+  - Bir sonraki sprintte `mockAnalysis.js` içerisindeki statik veriler kaldırılarak gerçek FastAPI backend uçlarıyla (gerçek LLM çıktılarıyla) doğrudan iletişim sağlanacak.
+  - RAG altyapısı için vektör tabanlı veritabanı testlerine başlanacak.
+
+### 📸 Görsel Kanıtlar (Sprint 2)
+
+<details>
+<summary><b>👉 Sprint 2 Görsellerini Görmek İçin Tıklayın</b></summary>
+
+<br>
+
+**1. Ürün Durumu (Backend & Veritabanı)**
+*Backend Health Check (200 OK) Terminal Çıktısı:*
+![Backend Terminal Health Check](docs/images/sprint2/backend_health.png)
+
+*Swagger UI Üzerinde Health API Başarılı Yanıtı:*
+![Backend Swagger Health](docs/images/sprint2/backend.png)
+
+*pgAdmin Üzerinde Başarıyla Oluşturulan Tablolar:*
+![Veritabanı Tabloları](docs/images/sprint2/database.png)
+
+**2. Ürün Durumu (Frontend & Arayüz Entegrasyonları)**
+*Doküman Yükleme ve Başlangıç Ekranları:*
+![Doküman Yükleme Alanı](docs/images/sprint2/urun_durumu_frontend.png)
+![Dosya Yüklendi Durumu](docs/images/sprint2/urun_durumu_sonuc_frontend.png)
+![Nasıl Çalışır Ekranı](docs/images/sprint2/urun_durumu_frontend2.png)
+
+*AI Şartname Analiz Sonuçları (Özet, Tarihler, Kurallar):*
+![Şartname Analiz Sonucu](docs/images/sprint2/ornek_analiz_sonucu1.png)
+
+*AI Proje Fikri Önerileri:*
+![Proje Fikirleri](docs/images/sprint2/ornek_analiz_sonucu2.png)
+
+*AI Risk Analizi (Kapsam, Gecikme, Kaynak Doğruluğu):*
+![Risk Analizi](docs/images/sprint2/ornek_analiz_sonucu3.png)
+
+**3. Sprint Board (Görev Takip Panosu)**
+*Jira üzerinde Sprint 2 görevlerinin (To Do, In Progress, In Review, Done) güncel durumu:*
+![Sprint Board](docs/images/sprint2/sprint_board.png)
+
+**4. Daily Scrum (Günlük Toplantı ve İletişim)**
+*Ekip içi görev dağılımı, Jira senkronizasyonu, PR bildirimleri ve anlık yardımlaşma süreçleri:*
+
+![Daily Scrum 1](docs/images/sprint2/daily_scrum1.jpeg)
+![Daily Scrum 2](docs/images/sprint2/daily_scrum2.jpeg)
+![Daily Scrum 3](docs/images/sprint2/daily_scrum3.jpeg)
+![Daily Scrum 4](docs/images/sprint2/daily_scrum4.jpeg)
+![Daily Scrum 5](docs/images/sprint2/daily_scrum5.jpeg)
+![Daily Scrum 6](docs/images/sprint2/daily_scrum6.jpeg)
 
 </details>
