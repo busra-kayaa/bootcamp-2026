@@ -1,5 +1,35 @@
+# Web Framework & API
 fastapi
 uvicorn[standard]
 pydantic-settings
+python-multipart
+aiofiles
+
+# Database & ORM
+sqlalchemy
+asyncpg
+alembic
+pgvector
+
+# Asynchronous Tasks & Caching
+redis
+celery
+
+# Document Processing (Kişi 1)
+pdfplumber
+pypdf
+pytesseract
+pdf2image
+pillow
+python-docx
+
+# Machine Learning & LLM (Kişi 2)
+sentence-transformers
+numpy
+openai
+tenacity
+
+# Testing & Utilities
 pytest
+pytest-asyncio
 httpx
