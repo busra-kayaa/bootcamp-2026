@@ -16,9 +16,9 @@ redis
 celery
 
 # Document Processing (Kişi 1)
-pdfplumber
+pdfplumber==0.11.9
 pypdf
-pytesseract
+easyocr
 pdf2image
 pillow
 python-docx
