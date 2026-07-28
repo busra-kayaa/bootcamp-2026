@@ -89,6 +89,9 @@ class PdfPlumberExtractor:
                 f"PDF dosyası okunurken hata oluştu: {path.name}"
             ) from exc
 
+        if not any(page["text"].strip() for page in extracted_pages):
+            raise ValueError("PDF içerisinde okunabilir metin bulunamadı.")
+
         return extracted_pages
 
     @staticmethod
@@ -110,3 +113,8 @@ class PdfPlumberExtractor:
 
         if path.stat().st_size == 0:
             raise ValueError("PDF dosyası boş.")
+
+        # Yalnızca uzantıyı değil, dosyanın gerçekten PDF olup olmadığını da kontrol et.
+        with path.open("rb") as file:
+            if b"%PDF-" not in file.read(1024):
+                raise ValueError("Dosya geçerli bir PDF formatında değil.")
