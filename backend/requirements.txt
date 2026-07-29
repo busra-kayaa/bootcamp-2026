@@ -11,10 +11,6 @@ asyncpg
 alembic
 pgvector
 
-# Asynchronous Tasks & Caching
-redis
-celery
-
 # Document Processing (Kişi 1)
 pdfplumber==0.11.9
 pypdf
@@ -33,3 +29,7 @@ tenacity
 pytest
 pytest-asyncio
 httpx
+
+# Asynchronous Tasks & Caching 
+redis<5.0.0
+celery>=5.3.6
