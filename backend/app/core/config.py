@@ -19,7 +19,8 @@ class Settings(BaseSettings):
     redis_url: str = "redis://localhost:6379/0"
     embedding_dimension: int = 384
 
-    model_config = SettingsConfigDict(env_file=".env", env_file_encoding="utf-8")
+    # Pydantic'in .env dosyasındaki fazladan değişkenleri göz ardı etmesi için extra="ignore" eklendi
+    model_config = SettingsConfigDict(env_file=".env", env_file_encoding="utf-8", extra="ignore")
 
     @field_validator("debug", mode="before")
     @classmethod
