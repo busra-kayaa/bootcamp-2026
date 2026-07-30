@@ -1,4 +1,6 @@
 function ResultPanel({ result }) {
+  if (!result) return null;
+
   return (
     <section className="results-section" id="results">
       <div className="results-heading">
@@ -11,7 +13,7 @@ function ResultPanel({ result }) {
           </p>
         </div>
 
-        <span className="source-chip">{result.sourceName}</span>
+        <span className="source-chip">{result?.sourceName || "Yüklenen Şartname"}</span>
       </div>
 
       <div className="results-grid">
@@ -19,7 +21,7 @@ function ResultPanel({ result }) {
           <span className="card-number">01</span>
           <span className="card-label">GENEL ÖZET</span>
           <h3>Şartnamenin temel beklentileri</h3>
-          <p>{result.summary}</p>
+          <p>{result?.summary || "Özet bulunamadı."}</p>
 
           <div className="source-reference">
             Kaynak: Yüklenen dokümanın analiz edilen bölümleri
@@ -31,12 +33,12 @@ function ResultPanel({ result }) {
           <span className="card-label">KRİTİK TARİHLER</span>
 
           <div className="date-list">
-            {result.criticalDates.map((item) => (
-              <div className="date-item" key={item.title}>
+            {(result?.criticalDates || []).map((item, idx) => (
+              <div className="date-item" key={item?.title || idx}>
                 <span />
                 <div>
-                  <strong>{item.title}</strong>
-                  <small>{item.date}</small>
+                  <strong>{item?.title}</strong>
+                  <small>{item?.date}</small>
                 </div>
               </div>
             ))}
@@ -48,10 +50,14 @@ function ResultPanel({ result }) {
           <span className="card-label">ZORUNLU KURALLAR</span>
 
           <ul className="rule-list">
-            {result.rules.map((rule) => (
-              <li key={rule}>
+            {(result?.rules || []).map((rule, idx) => (
+              <li key={idx}>
                 <span>✓</span>
-                {rule}
+                <div>
+                  {/* Objenin alt alanlarını güvenle ekrana basıyoruz */}
+                  <strong>[{rule?.category}]</strong> {rule?.text}
+                  {rule?.risk_level && <small> ({rule.risk_level})</small>}
+                </div>
               </li>
             ))}
           </ul>
@@ -64,26 +70,26 @@ function ResultPanel({ result }) {
           <h3>Şartnameye en uygun fikirler</h3>
         </div>
 
-        <span>{result.ideas.length} öneri bulundu</span>
+        <span>{(result?.ideas || []).length} öneri bulundu</span>
       </div>
 
       <div className="idea-grid">
-        {result.ideas.map((idea, index) => (
-          <article className="idea-card" key={idea.title}>
+        {(result?.ideas || []).map((idea, index) => (
+          <article className="idea-card" key={idea?.title || index}>
             <div className="idea-card-header">
               <span className="idea-index">
                 {String(index + 1).padStart(2, "0")}
               </span>
 
-              <span className="score-badge">%{idea.score} uyum</span>
+              <span className="score-badge">%{idea?.score || 0} uyum</span>
             </div>
 
-            <h3>{idea.title}</h3>
-            <p>{idea.description}</p>
+            <h3>{idea?.title}</h3>
+            <p>{idea?.description}</p>
 
             <div className="idea-meta">
               <span>AI katkısı</span>
-              <strong>{idea.aiContribution}</strong>
+              <strong>{idea?.aiContribution}</strong>
             </div>
 
             <button type="button">Bu fikri seç</button>
@@ -99,19 +105,19 @@ function ResultPanel({ result }) {
       </div>
 
       <div className="risk-list">
-        {result.risks.map((risk) => (
-          <article className="risk-item" key={risk.title}>
+        {(result?.risks || []).map((risk, idx) => (
+          <article className="risk-item" key={risk?.title || idx}>
             <div>
-              <strong>{risk.title}</strong>
-              <p>{risk.description}</p>
+              <strong>{risk?.title}</strong>
+              <p>{risk?.description}</p>
             </div>
 
             <span
-              className={`risk-level risk-level--${risk.level
+              className={`risk-level risk-level--${(risk?.level || "Orta")
                 .toLocaleLowerCase("tr-TR")
                 .replace("ü", "u")}`}
             >
-              {risk.level}
+              {risk?.level}
             </span>
           </article>
         ))}

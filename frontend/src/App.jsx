@@ -2,9 +2,9 @@ import { useState } from "react";
 import "./App.css";
 
 import Navbar from "./components/Navbar";
-import UploadWorkspace from "./components/UploadWorkspace";
 import ResultPanel from "./components/ResultPanel";
-import { mockAnalysis } from "./data/mockAnalysis";
+import UploadWorkspace from "./components/UploadWorkspace";
+// mockAnalysis importu tamamen kaldırıldı, artık gerçek veri kullanacağız.
 
 const features = [
   {
@@ -35,23 +35,50 @@ function App() {
     setIsLoading(true);
     setAnalysisResult(null);
 
-    // Backend hazır olmadığı için şimdilik yapay bekleme kullanıyoruz.
-    await new Promise((resolve) => setTimeout(resolve, 1400));
+    try {
+      // 1. Backend'e gönderilecek veriyi hazırlıyoruz
+      const formData = new FormData();
+      
+      if (file) {
+        formData.append("file", file);
+      }
+      if (text && text.trim()) {
+        formData.append("text", text);
+      }
 
-    setAnalysisResult({
-      ...mockAnalysis,
-      sourceName: file?.name || "Girilen şartname metni",
-      inputLength: text.length,
-    });
-
-    setIsLoading(false);
-
-    setTimeout(() => {
-      document.getElementById("results")?.scrollIntoView({
-        behavior: "smooth",
-        block: "start",
+      // 2. Kişi 3'ün yazdığı uç noktaya (Endpoint) gerçek isteği atıyoruz
+      const response = await fetch("http://localhost:8000/api/v1/documents", {
+        method: "POST",
+        body: formData,
       });
-    }, 100);
+
+      if (!response.ok) {
+        throw new Error("Analiz sırasında backend tarafında bir hata oluştu.");
+      }
+
+      // 3. Groq LLM'den gelen gerçek sonucu alıyoruz
+      const data = await response.json();
+
+      // 4. Sonucu React state'ine (arayüze) kaydediyoruz
+      setAnalysisResult({
+        ...data,
+        sourceName: file?.name || "Girilen şartname metni",
+      });
+
+    } catch (error) {
+      console.error("API Bağlantı Hatası:", error);
+      alert("Sunucuya bağlanılamadı. Lütfen backend'in (uvicorn) çalıştığından emin olun.");
+    } finally {
+      setIsLoading(false);
+
+      // Sonuç paneline yumuşak kaydırma animasyonu
+      setTimeout(() => {
+        document.getElementById("results")?.scrollIntoView({
+          behavior: "smooth",
+          block: "start",
+        });
+      }, 100);
+    }
   };
 
   return (
