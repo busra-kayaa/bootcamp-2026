@@ -88,8 +88,8 @@ function ResultPanel({ result }) {
             <p>{idea?.description}</p>
 
             <div className="idea-meta">
-              <span>AI katkısı</span>
-              <strong>{idea?.aiContribution}</strong>
+              <span className="ai-label">AI Katkısı</span>
+              {idea.aiContribution}
             </div>
 
             <button type="button">Bu fikri seç</button>

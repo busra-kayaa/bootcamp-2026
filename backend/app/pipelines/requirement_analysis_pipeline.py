@@ -68,7 +68,7 @@ class RequirementAnalysisPipeline:
         
         # 1. RAG için arama sorgusunu vektöre çevir
         # Fikir üretebilmesi için vektör sorgusuna "proje hedefleri ve beklentiler" kelimelerini de ekledik.
-        query = "Yarışmanın son başvuru tarihleri, takvim, zorunlu kurallar, yasaklar, takım kısıtlamaları, puanlama kriterleri, proje hedefleri ve beklentiler nelerdir?"
+        query = "Yarışmanın son başvuru tarihleri, takvim, zorunlu kurallar, yasaklar, takım kısıtlamaları, puanlama kriterleri, proje hedefleri, diskalifiye sebepleri, cezalar ve elenme riskleri nelerdir?"
         query_embedding = await self.embedding_provider.embed_text(query)
 
         # 2. Veritabanından (PGVector) şartnamenin kural ve tarihlerle ilgili kısımlarını getir
@@ -83,15 +83,17 @@ class RequirementAnalysisPipeline:
             [f"[Kaynak ID: {c['chunk_id']}] Sayfa {c['page_start']}: {c['text']}" for c in relevant_chunks]
         )
 
-        # 4. LLM'e gidecek kullanıcı mesajını oluştur
         user_prompt = f"""
         Şartnameden Çekilen İlgili Bölümler (RAG Bağlamı):
         {context_text}
 
         Lütfen yukarıdaki bağlamı kullanarak şartnameyi analiz et. Tarihleri, kuralları, riskleri çıkar ve bunlara uygun yenilikçi proje önerileri üret.
-        Bulduğun her bilginin yanına mutlaka '[Kaynak ID: ...]' formatındaki chunk ID'sini ve sayfa numarasını ekle.
-        Kurallar, tarihler ve riskler için eğer bir bilgi bu metinlerde yoksa, asla uydurma (halüsinasyon yapma), boş bırak.
-        Ancak proje önerileri (ideas) konusunda şartnamenin ana hedeflerine sadık kalarak kendi mühendislik vizyonunla yaratıcı olabilirsin.
+        
+        ÖNEMLİ ANALİZ KURALLARI:
+        1. TARİHLER: Tarihler bir başlangıç ve bitiş aralığı içeriyorsa (Örn: 19 Haziran - 5 Temmuz), tarihi kesinlikle kırpma ve aralığın tamamını al.
+        2. RİSKLER: Riskleri analiz ederken özellikle 'diskalifiye sebebi', 'yasak' veya 'elenme' gibi doğrudan projeyi başarısız kılacak kritik kuralları kesinlikle YÜKSEK öncelikli risk olarak belirle.
+        3. KAYNAK GÖSTERİMİ: Kurallar, tarihler ve riskler için bulduğun her bilginin yanına mutlaka '[Kaynak ID: ...]' formatındaki chunk ID'sini ve sayfa numarasını ekle. Metinde yoksa asla uydurma.
+        4. FİKİRLER (IDEAS): Proje önerileri (ideas) tamamen senin mühendislik vizyonun ve sentezin olacağı için, fikirlerin açıklamasına (description) KESİNLİKLE sayfa numarası veya kaynak ID ekleme.
         """
 
         # 5. Groq LLM'i JSON formatında cevap üretmeye zorlayarak çağır

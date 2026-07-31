@@ -772,10 +772,12 @@ footer {
   margin: 25px 0 18px;
   padding-top: 15px;
   display: flex;
-  align-items: center;
+  align-items: flex-start; /* Metin uzun olursa üstten hizalı kalsın diye center yerine flex-start yapıyoruz */
   justify-content: space-between;
+  gap: 12px; /* 👈 YENİ EKLENEN: Etiket ile açıklama arasına nefes aldıracak boşluk */
   border-top: 1px solid rgba(126, 146, 177, 0.11);
   font-size: 11px;
+  line-height: 1.5; /* Uzun metinlerin okunabilirliğini artırmak için eklendi */
 }
 
 .idea-meta span {
