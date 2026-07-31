@@ -11,7 +11,7 @@ from app.infrastructure.llm.structured_output_parser import StructuredOutputPars
 from app.prompts.requirement_prompts import REQUIREMENT_AGENT_PROMPT
 
 # ---------------------------------------------------------
-# Çıktı Formatını Zorlamak İçin Pydantic Şemaları[cite: 3]
+# Çıktı Formatını Zorlamak İçin Pydantic Şemaları
 # Frontend'in beklediği camelCase yapısına uygun hazırlanmıştır.
 # ---------------------------------------------------------
 class CriticalDateSchema(BaseModel):
@@ -33,11 +33,19 @@ class RiskSchema(BaseModel):
     level: str = Field(description="YÜKSEK, ORTA veya DÜŞÜK")
     sourceChunkId: Optional[str] = None
 
+# --- YENİ EKLENEN FİKİR (IDEA) ŞEMASI ---
+class IdeaSchema(BaseModel):
+    title: str = Field(description="Proje fikrinin başlığı")
+    description: str = Field(description="Fikrin detayı ve şartnameye nasıl tam uyum sağladığı")
+    score: int = Field(description="Bu fikrin şartname hedefleriyle uyum puanı (0-100 arası tam sayı)")
+    aiContribution: str = Field(description="Yapay zekânın bu fikre katabileceği ekstra inovatif değer")
+
 class RequirementAnalysisResponse(BaseModel):
     summary: str = Field(description="Şartnamenin genel özeti ve temel beklentileri")
     criticalDates: List[CriticalDateSchema]
     rules: List[RuleSchema]
     risks: List[RiskSchema]
+    ideas: List[IdeaSchema] # 👈 Şemaya eklendi
 
 # ---------------------------------------------------------
 # Ana Pipeline Sınıfı
@@ -55,21 +63,22 @@ class RequirementAnalysisPipeline:
 
     async def execute(self, document_id: int) -> dict:
         """
-        Şartnameyi analiz ederek özet, tarihler, kurallar ve riskleri çıkarır[cite: 3].
+        Şartnameyi analiz ederek özet, tarihler, kurallar, riskler ve proje önerilerini çıkarır.
         """
         
         # 1. RAG için arama sorgusunu vektöre çevir
-        query = "Yarışmanın son başvuru tarihleri, takvim, zorunlu kurallar, yasaklar, takım kısıtlamaları ve puanlama kriterleri nelerdir?"
+        # Fikir üretebilmesi için vektör sorgusuna "proje hedefleri ve beklentiler" kelimelerini de ekledik.
+        query = "Yarışmanın son başvuru tarihleri, takvim, zorunlu kurallar, yasaklar, takım kısıtlamaları, puanlama kriterleri, proje hedefleri ve beklentiler nelerdir?"
         query_embedding = await self.embedding_provider.embed_text(query)
 
-        # 2. Veritabanından (PGVector) şartnamenin kural ve tarihlerle ilgili kısımlarını getir[cite: 3]
+        # 2. Veritabanından (PGVector) şartnamenin kural ve tarihlerle ilgili kısımlarını getir
         relevant_chunks = await self.vector_store.similarity_search(
             document_id=document_id,
             query_embedding=query_embedding,
             top_k=10  # Analiz için biraz daha geniş bir bağlam (10 chunk) çekiyoruz
         )
 
-        # 3. LLM için bağlamı kaynak ID'leri ve sayfa numaralarıyla hazırla[cite: 3]
+        # 3. LLM için bağlamı kaynak ID'leri ve sayfa numaralarıyla hazırla
         context_text = "\n\n".join(
             [f"[Kaynak ID: {c['chunk_id']}] Sayfa {c['page_start']}: {c['text']}" for c in relevant_chunks]
         )
@@ -79,19 +88,20 @@ class RequirementAnalysisPipeline:
         Şartnameden Çekilen İlgili Bölümler (RAG Bağlamı):
         {context_text}
 
-        Lütfen yukarıdaki bağlamı kullanarak şartnameyi analiz et. Tarihleri, kuralları ve riskleri çıkar.
-        Bulduğun her bilginin yanına mutlaka '[Kaynak ID: ...]' formatındaki chunk ID'sini ve sayfa numarasını ekle[cite: 3].
-        Eğer bir bilgi bu metinlerde yoksa, asla uydurma (halüsinasyon yapma), boş bırak.
+        Lütfen yukarıdaki bağlamı kullanarak şartnameyi analiz et. Tarihleri, kuralları, riskleri çıkar ve bunlara uygun yenilikçi proje önerileri üret.
+        Bulduğun her bilginin yanına mutlaka '[Kaynak ID: ...]' formatındaki chunk ID'sini ve sayfa numarasını ekle.
+        Kurallar, tarihler ve riskler için eğer bir bilgi bu metinlerde yoksa, asla uydurma (halüsinasyon yapma), boş bırak.
+        Ancak proje önerileri (ideas) konusunda şartnamenin ana hedeflerine sadık kalarak kendi mühendislik vizyonunla yaratıcı olabilirsin.
         """
 
-        # 5. Groq LLM'i JSON formatında cevap üretmeye zorlayarak çağır[cite: 3]
+        # 5. Groq LLM'i JSON formatında cevap üretmeye zorlayarak çağır
         raw_llm_output = await self.llm_provider.generate_structured(
             system_prompt=REQUIREMENT_AGENT_PROMPT,
             user_prompt=user_prompt,
             response_schema=RequirementAnalysisResponse
         )
 
-        # 6. Çıktıyı parse et ve Pydantic ile doğrula[cite: 3]
+        # 6. Çıktıyı parse et ve Pydantic ile doğrula
         validated_data = StructuredOutputParser.parse(
             llm_output=raw_llm_output,
             schema=RequirementAnalysisResponse

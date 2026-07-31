@@ -6,11 +6,16 @@ from app.core.config import get_settings
 settings = get_settings()
 
 # 1. Asenkron motoru (engine) oluşturuyoruz
-# echo=settings.debug sayesinde geliştirme aşamasında çalıştırılan SQL sorgularını terminalde görebilirsin.
 engine = create_async_engine(
     settings.database_url, 
     echo=settings.debug,  
-    future=True
+    future=True,
+    # --- YENİ EKLENEN GÜÇLENDİRİCİ AYARLAR ---
+    pool_pre_ping=True,  # İşlem yapmadan önce PostgreSQL'e "Orada mısın?" diye sorar, koptuysa yeni bağlantı açar.
+    pool_recycle=1800,   # 30 dakikada bir bağlantıları temizleyip tazeler.
+    connect_args={
+        "command_timeout": 1200  # AI vektör işlemleri uzun sürerse veritabanının 20 dakika sabretmesini sağlar.
+    }
 )
 
 # 2. Asenkron oturum (session) üreticisi
