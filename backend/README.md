@@ -6,7 +6,7 @@ Backend klasöründe Windows PowerShell ile aşağıdaki komutları çalıştır
 
 ```powershell
 python -m venv .venv
-.\.venv\Scripts\Activate.ps1
+.\.venv\Scripts\activate  
 python -m pip install -r requirements.txt
 Copy-Item .env.example .env
 uvicorn app.main:app --reload
