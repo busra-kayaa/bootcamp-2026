@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 function IdeaDetail({ idea, documentId, onBack }) {
   const [sprintPlan, setSprintPlan] = useState(null);
@@ -10,12 +10,14 @@ function IdeaDetail({ idea, documentId, onBack }) {
   const [sprintCount, setSprintCount] = useState(3);
   const [customRoles, setCustomRoles] = useState("Product Owner, Scrum Master, Developer");
 
+  // PDF çıktısında sadece sprint planını hedeflemek için bir ref oluşturuyoruz
+  const printRef = useRef();
+
   const handleGeneratePlan = () => {
     setIsConfigured(true);
   };
 
   useEffect(() => {
-    // isConfigured false ise (yani kullanıcı henüz ayarları onaylamadıysa) istek atma!
     if (!idea || !documentId || !isConfigured) return;
 
     const fetchSprintPlan = async () => {
@@ -47,7 +49,57 @@ function IdeaDetail({ idea, documentId, onBack }) {
     };
 
     fetchSprintPlan();
-  }, [idea, documentId, isConfigured]); // isConfigured tetikleyici olarak eklendi
+  }, [idea, documentId, isConfigured]);
+
+  // --- DIŞA AKTARMA (EXPORT) FONKSİYONLARI BAŞLANGICI --- //
+
+  // 1. CSV'ye Çevir ve İndir (Jira, Trello veya Asana'ya Import Etmek İçin)
+  const exportToCSV = () => {
+    if (!sprintPlan) return;
+
+    // CSV Sütun Başlıkları
+    const headers = ["Sprint", "Hedef", "User Story", "Story Point", "Task", "Öncelik", "Sorumlu Rol"];
+    let csvContent = headers.join(",") + "\n";
+
+    sprintPlan.sprints.forEach(sprint => {
+      // Virgülleri bozmamak için metinleri çift tırnak içine alıyoruz
+      const cleanSprintName = `"${sprint.sprintName.replace(/"/g, '""')}"`;
+      const cleanGoal = `"${sprint.goal.replace(/"/g, '""')}"`;
+
+      sprint.userStories.forEach(story => {
+        const cleanStoryTitle = `"${story.title.replace(/"/g, '""')}"`;
+        const storyPoints = story.storyPoints;
+
+        story.tasks.forEach(task => {
+          const cleanTaskTitle = `"${task.title.replace(/"/g, '""')}"`;
+          const priority = task.priority;
+          const role = `"${task.responsible_role.replace(/"/g, '""')}"`;
+
+          // Satırı oluştur
+          const row = [cleanSprintName, cleanGoal, cleanStoryTitle, storyPoints, cleanTaskTitle, priority, role];
+          csvContent += row.join(",") + "\n";
+        });
+      });
+    });
+
+    // Dosyayı oluştur ve indir (UTF-8 BOM ekleyerek Türkçe karakterleri koruyoruz)
+    const blob = new Blob(["\uFEFF" + csvContent], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement("a");
+    const url = URL.createObjectURL(blob);
+    link.setAttribute("href", url);
+    link.setAttribute("download", `Sprint_Plani_${idea.title.replace(/\s+/g, '_')}.csv`);
+    link.style.visibility = 'hidden';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
+  // 2. PDF Olarak Yazdır (Tarayıcının yerleşik Print özelliğini kullanıyoruz)
+  const handlePrint = () => {
+    window.print();
+  };
+
+  // --- DIŞA AKTARMA (EXPORT) FONKSİYONLARI BİTİŞİ --- //
 
   if (!idea) return null;
 
@@ -56,6 +108,7 @@ function IdeaDetail({ idea, documentId, onBack }) {
       <section className="results-section">
         <button 
           onClick={onBack}
+          className="hide-on-print" // CSS ile yazdırırken gizlenecek class eklendi
           style={{
              background: 'rgba(17, 32, 51, 0.7)', 
              border: '1px solid rgba(129, 148, 178, 0.16)', 
@@ -107,14 +160,69 @@ function IdeaDetail({ idea, documentId, onBack }) {
             </div>
           </article>
           
-          <article className="result-card" style={{ minHeight: 'auto' }}>
-             <span className="card-number">02</span>
-             <span className="card-label">YOL HARİTASI</span>
-             <h3 style={{ marginTop: '24px' }}>Sprint Planlaması</h3>
+          {/* Yazdırılacak alanı işaretliyoruz */}
+          <article className="result-card print-area" ref={printRef} style={{ minHeight: 'auto' }}>
+             
+             {/* BAŞLIK VE DIŞA AKTARMA BUTONLARI */}
+             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '16px' }}>
+               <div>
+                 <span className="card-number">02</span>
+                 <span className="card-label">YOL HARİTASI</span>
+                 <h3 style={{ marginTop: '24px' }}>Sprint Planlaması</h3>
+               </div>
 
-             {/* YENİ: Ayarlar Formu (Sadece henüz yapılandırılmadıysa görünür) */}
+               {/* Veri yüklendiyse Export Butonlarını Göster */}
+               {sprintPlan && !isLoading && (
+                 <div className="hide-on-print" style={{ display: 'flex', gap: '12px', marginTop: '24px' }}>
+                   <button 
+                     onClick={exportToCSV}
+                     style={{
+                       background: 'rgba(101, 203, 163, 0.1)', 
+                       border: '1px solid rgba(101, 203, 163, 0.3)', 
+                       color: '#65cba3', 
+                       padding: '8px 16px', 
+                       borderRadius: '8px',
+                       cursor: 'pointer',
+                       fontSize: '12px',
+                       fontWeight: '600',
+                       display: 'flex',
+                       alignItems: 'center',
+                       gap: '6px',
+                       transition: 'all 0.2s ease'
+                     }}
+                     onMouseOver={(e) => e.currentTarget.style.background = 'rgba(101, 203, 163, 0.2)'}
+                     onMouseOut={(e) => e.currentTarget.style.background = 'rgba(101, 203, 163, 0.1)'}
+                   >
+                     📄 CSV İndir (Jira/Trello)
+                   </button>
+
+                   <button 
+                     onClick={handlePrint}
+                     style={{
+                       background: 'rgba(129, 145, 255, 0.1)', 
+                       border: '1px solid rgba(129, 145, 255, 0.3)', 
+                       color: '#8191ff', 
+                       padding: '8px 16px', 
+                       borderRadius: '8px',
+                       cursor: 'pointer',
+                       fontSize: '12px',
+                       fontWeight: '600',
+                       display: 'flex',
+                       alignItems: 'center',
+                       gap: '6px',
+                       transition: 'all 0.2s ease'
+                     }}
+                     onMouseOver={(e) => e.currentTarget.style.background = 'rgba(129, 145, 255, 0.2)'}
+                     onMouseOut={(e) => e.currentTarget.style.background = 'rgba(129, 145, 255, 0.1)'}
+                   >
+                     🖨️ PDF Dışa Aktar
+                   </button>
+                 </div>
+               )}
+             </div>
+
              {!isConfigured && (
-               <div style={{ marginTop: '24px', background: 'rgba(10, 23, 39, 0.4)', padding: '24px', borderRadius: '16px', border: '1px solid rgba(129, 148, 178, 0.15)' }}>
+               <div className="hide-on-print" style={{ marginTop: '24px', background: 'rgba(10, 23, 39, 0.4)', padding: '24px', borderRadius: '16px', border: '1px solid rgba(129, 148, 178, 0.15)' }}>
                  <p style={{ color: '#b8c6d7', fontSize: '13px', marginBottom: '20px' }}>
                    Planı oluşturmadan önce takımınızın yapısını ve sürecini belirleyin:
                  </p>
@@ -164,7 +272,6 @@ function IdeaDetail({ idea, documentId, onBack }) {
                </div>
              )}
              
-             {/* Yükleme, Hata ve Sprint Planı Listeleme (Eski kodun aynısı) */}
              {isLoading && (
                <div style={{ padding: '40px 0', textAlign: 'center', color: '#8191ff' }}>
                  Yapay zekâ {teamSize} kişilik takım için backlog ve {sprintCount} sprintlik döngüyü kurguluyor. Lütfen bekleyin...
@@ -180,7 +287,7 @@ function IdeaDetail({ idea, documentId, onBack }) {
              {sprintPlan && !isLoading && (
                <div style={{ marginTop: '20px', display: 'flex', flexDirection: 'column', gap: '20px' }}>
                  {sprintPlan.sprints.map((sprint, idx) => (
-                   <div key={idx} style={{ background: 'rgba(10, 23, 39, 0.4)', padding: '24px', borderRadius: '16px', border: '1px solid rgba(129, 148, 178, 0.15)' }}>
+                   <div key={idx} className="print-sprint-card" style={{ background: 'rgba(10, 23, 39, 0.4)', padding: '24px', borderRadius: '16px', border: '1px solid rgba(129, 148, 178, 0.15)' }}>
                      <h4 style={{ margin: '0 0 8px 0', color: '#e1e9f4', fontSize: '18px' }}>{sprint.sprintName}</h4>
                      <p style={{ fontSize: '13px', color: '#8496ab', marginBottom: '20px', lineHeight: '1.6' }}><strong>Hedef:</strong> {sprint.goal}</p>
                      
@@ -215,6 +322,18 @@ function IdeaDetail({ idea, documentId, onBack }) {
           </article>
         </div>
       </section>
+
+      <style>{`
+        @media print {
+          body { background: white; color: black; }
+          .hide-on-print, nav, footer, .ambient, .background-grid { display: none !important; }
+          .idea-detail-page { padding: 0 !important; }
+          .result-card { border: none !important; background: none !important; box-shadow: none !important; padding: 0 !important; }
+          .print-sprint-card { page-break-inside: avoid; border: 1px solid #ddd !important; background: #fff !important; margin-bottom: 20px !important; }
+          h2, h3, h4, p, span, strong { color: black !important; }
+          .score-badge { display: none !important; }
+        }
+      `}</style>
     </main>
   );
 }
