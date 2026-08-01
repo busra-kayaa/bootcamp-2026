@@ -1,10 +1,10 @@
 import { useState } from "react";
 import "./App.css";
 
+import IdeaDetail from "./components/IdeaDetail";
 import Navbar from "./components/Navbar";
 import ResultPanel from "./components/ResultPanel";
 import UploadWorkspace from "./components/UploadWorkspace";
-import IdeaDetail from "./components/IdeaDetail";
 // mockAnalysis importu tamamen kaldırıldı, artık gerçek veri kullanacağız.
 
 const features = [
@@ -94,6 +94,7 @@ function App() {
       {selectedIdea ? (
         <IdeaDetail 
           idea={selectedIdea} 
+          documentId={analysisResult?.documentId}
           onBack={() => {
             setSelectedIdea(null);
             setTimeout(() => {

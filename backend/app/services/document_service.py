@@ -127,17 +127,15 @@ class DocumentService:
 
             return {
                 "message": "Şartname yapay zekâ tarafından başarıyla analiz edildi",
+                "documentId": actual_document_id, # 👈 YENİ EKLENEN SATIR (Frontend bağlantısı için şart!)
                 "sourceName": filename,
                 "summary": ai_result.get("summary", ""),
                 "criticalDates": ai_result.get("criticalDates", []),
                 "rules": ai_result.get("rules", []),
-                
-                # KRİTİK DÜZELTME: Fikirler artık boşa gitmiyor, yapay zekadan çekiliyor!
                 "ideas": ai_result.get("ideas", []),
-                
                 "risks": ai_result.get("risks", [])
             }
-
+        
         except Exception as e:
             await self.db.rollback()
             print(f"Gerçek LLM Analiz Hatası: {e}")
