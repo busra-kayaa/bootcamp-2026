@@ -4,6 +4,7 @@ import "./App.css";
 import Navbar from "./components/Navbar";
 import ResultPanel from "./components/ResultPanel";
 import UploadWorkspace from "./components/UploadWorkspace";
+import IdeaDetail from "./components/IdeaDetail";
 // mockAnalysis importu tamamen kaldırıldı, artık gerçek veri kullanacağız.
 
 const features = [
@@ -30,6 +31,7 @@ const features = [
 function App() {
   const [isLoading, setIsLoading] = useState(false);
   const [analysisResult, setAnalysisResult] = useState(null);
+  const [selectedIdea, setSelectedIdea] = useState(null);
 
   const handleAnalyze = async ({ text, file }) => {
     setIsLoading(true);
@@ -89,8 +91,19 @@ function App() {
 
       <Navbar />
 
-      <main>
-        <section className="hero-section">
+      {selectedIdea ? (
+        <IdeaDetail 
+          idea={selectedIdea} 
+          onBack={() => {
+            setSelectedIdea(null);
+            setTimeout(() => {
+              document.getElementById("results")?.scrollIntoView({ behavior: "instant", block: "start" });
+            }, 50);
+          }} 
+        />
+      ) : (
+        <main>
+          <section className="hero-section">
           <div className="hero-content">
             <span className="eyebrow">
               <span />
@@ -165,8 +178,17 @@ function App() {
           </div>
         </section>
 
-        {analysisResult && <ResultPanel result={analysisResult} />}
+        {analysisResult && (
+          <ResultPanel 
+            result={analysisResult} 
+            onIdeaSelect={(idea) => {
+              setSelectedIdea(idea);
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            }} 
+          />
+        )}
       </main>
+      )}
 
       <footer>
         <div>

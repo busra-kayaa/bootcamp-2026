@@ -1,4 +1,4 @@
-function ResultPanel({ result }) {
+function ResultPanel({ result, onIdeaSelect }) {
   if (!result) return null;
 
   return (
@@ -92,7 +92,7 @@ function ResultPanel({ result }) {
               {idea.aiContribution}
             </div>
 
-            <button type="button">Bu fikri seç</button>
+            <button type="button" onClick={() => onIdeaSelect && onIdeaSelect(idea)}>Bu fikri seç</button>
           </article>
         ))}
       </div>
