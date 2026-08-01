@@ -255,3 +255,11 @@ Projemiz, FastAPI altyapısı ve **Clean Architecture (Temiz Mimari)** prensiple
 ![Daily Scrum 6](docs/images/sprint2/daily_scrum6.jpeg)
 
 </details>
+
+---
+
+## 📌 Sprint 3 / Entegrasyon ve Arayüz Eklemeleri (Ağustos 2026)
+
+**Son Geliştirmeler:**
+* **Gerçek API Entegrasyonu:** Arayüzdeki `mockAnalysis.js` geçici veri kaynağı devreden çıkarılarak, FastAPI backend servisine (`/api/v1/documents`) tam entegrasyon sağlandı. Arayüz artık yapay zeka analiz sonuçlarını gerçek zamanlı olarak sunucudan alıyor.
+* **Fikir Detay Ekranı (IdeaDetail):** Şartnameye uygun olarak üretilen proje fikirleri için **"Bu fikri seç"** özelliği arayüze eklendi. Fikir seçildiğinde projenin tasarım bütünlüğünü koruyarak açılan bu yeni sayfa, projenin bir sonraki aşaması olan dinamik Sprint Planlaması ve Backlog üretimi için gerekli arayüz altyapısını sunmaktadır.
