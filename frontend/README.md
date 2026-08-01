@@ -1,6 +1,6 @@
 # SprintMate AI – Frontend
 
-SprintMate AI frontend uygulaması, kullanıcıların yarışma şartnamelerini yüklemesini ve yapay zekâ tarafından oluşturulan analiz sonuçlarını görüntülemesini sağlayan React tabanlı kullanıcı arayüzüdür.
+SprintMate AI frontend uygulaması, kullanıcıların yarışma şartnamelerini yüklemesini, yapay zekâ tarafından oluşturulan analiz sonuçlarını gerçek zamanlı olarak görüntülemesini ve seçilen fikirler üzerinden proje sprint planlaması yapmasını sağlayan React tabanlı modern bir kullanıcı arayüzüdür.
 
 ## Kullanılan Teknolojiler
 
@@ -13,27 +13,18 @@ SprintMate AI frontend uygulaması, kullanıcıların yarışma şartnamelerini 
 ## Mevcut Özellikler
 
 - Modern ve responsive kullanıcı arayüzü
-- PDF, TXT, DOC ve DOCX dosyası yükleme
-- Sürükle-bırak dosya yükleme desteği
-- Şartname metnini doğrudan girme
-- Dosya formatı doğrulama
-- Analiz sırasında yükleniyor göstergesi
-- Kritik tarihlerin ve kuralların görüntülenmesi
-- Proje fikirlerinin listelenmesi
+- PDF, TXT, DOC ve DOCX dosyası yükleme (Sürükle-bırak desteği)
+- Şartname metnini doğrudan girebilme ve dosya formatı doğrulama
+- FastAPI backend üzerinden gerçek zamanlı yapay zeka (LLM) analiz entegrasyonu
+- Kritik tarihlerin, zorunlu kuralların ve genel özetin yapılandırılmış gösterimi
+- Proje fikirlerinin AI katkısı ve uyum skoruyla listelenmesi
 - Risk analizi sonuçlarının gösterilmesi
+- **Fikir Detay Ekranı (IdeaDetail):** Seçilen fikirler için özel sayfada detaylı inceleme, sprint planlaması ve backlog oluşturma altyapısı
 - Mobil ve masaüstü cihazlarla uyumlu tasarım
 
-## Geçici Veri Kullanımı
+## API Entegrasyonu (Güncellendi)
 
-Backend ve yapay zekâ entegrasyonu geliştirme aşamasında olduğu için analiz sonuçları şu anda örnek veriler kullanılarak gösterilmektedir.
-
-Örnek veriler şu dosyada bulunmaktadır:
-
-```text
-src/data/mockAnalysis.js
-```
-
-Backend entegrasyonu tamamlandığında geçici veriler gerçek API sonuçlarıyla değiştirilecektir.
+Proje mock (geçici) veri kullanımından tamamen çıkmış olup, gerçek **FastAPI backend** sistemiyle asenkron olarak entegre edilmiştir. Arayüzden atılan dosya/metin istekleri doğrudan `http://localhost:8000/api/v1/documents` uç noktasına (endpoint) gönderilmektedir. *(Eski `mockAnalysis.js` yapısı tamamen iptal edilmiştir.)*
 
 ## Proje Yapısı
 
@@ -42,9 +33,8 @@ src/
 ├── components/
 │   ├── Navbar.jsx
 │   ├── UploadWorkspace.jsx
-│   └── ResultPanel.jsx
-├── data/
-│   └── mockAnalysis.js
+│   ├── ResultPanel.jsx
+│   └── IdeaDetail.jsx
 ├── App.jsx
 ├── App.css
 ├── index.css
@@ -65,7 +55,7 @@ Gerekli paketleri yükleyin:
 npm install
 ```
 
-Geliştirme sunucusunu başlatın:
+Geliştirme sunucusunu başlatın (NOT: İsteklerin çalışması için arka planda uvicorn backend'inin de çalışıyor olması gerekmektedir):
 
 ```bash
 npm run dev
@@ -83,18 +73,18 @@ http://localhost:5173
 npm run build
 ```
 
-## Planlanan Backend Akışı
+## Veri Akışı
 
 ```text
-Doküman yükleme
-      ↓
-Frontend API isteği
-      ↓
-Backend doküman analizi
-      ↓
-Yapılandırılmış JSON sonucu
-      ↓
-Sonuçların arayüzde gösterilmesi
+Kullanıcı Doküman veya Metin Yükler
+              ↓
+Frontend Form Data API İsteği (POST /api/v1/documents)
+              ↓
+Backend NLP/LLM AI Doküman Analizi
+              ↓
+JSON Formatında Yapılandırılmış Analiz Sonuçlarının Dönmesi
+              ↓
+React State'e Kaydedilip Ekrana (ResultPanel & IdeaDetail) Çizilmesi
 ```
 
 ## Takım
