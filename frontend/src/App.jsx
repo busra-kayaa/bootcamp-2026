@@ -5,7 +5,6 @@ import IdeaDetail from "./components/IdeaDetail";
 import Navbar from "./components/Navbar";
 import ResultPanel from "./components/ResultPanel";
 import UploadWorkspace from "./components/UploadWorkspace";
-// mockAnalysis importu tamamen kaldırıldı, artık gerçek veri kullanacağız.
 
 const features = [
   {
@@ -38,7 +37,6 @@ function App() {
     setAnalysisResult(null);
 
     try {
-      // 1. Backend'e gönderilecek veriyi hazırlıyoruz
       const formData = new FormData();
       
       if (file) {
@@ -48,7 +46,6 @@ function App() {
         formData.append("text", text);
       }
 
-      // 2. Kişi 3'ün yazdığı uç noktaya (Endpoint) gerçek isteği atıyoruz
       const response = await fetch("http://localhost:8000/api/v1/documents", {
         method: "POST",
         body: formData,
@@ -58,10 +55,8 @@ function App() {
         throw new Error("Analiz sırasında backend tarafında bir hata oluştu.");
       }
 
-      // 3. Groq LLM'den gelen gerçek sonucu alıyoruz
       const data = await response.json();
 
-      // 4. Sonucu React state'ine (arayüze) kaydediyoruz
       setAnalysisResult({
         ...data,
         sourceName: file?.name || "Girilen şartname metni",
@@ -73,7 +68,6 @@ function App() {
     } finally {
       setIsLoading(false);
 
-      // Sonuç paneline yumuşak kaydırma animasyonu
       setTimeout(() => {
         document.getElementById("results")?.scrollIntoView({
           behavior: "smooth",
@@ -125,7 +119,7 @@ function App() {
 
             <div className="hero-actions">
               <a className="primary-link" href="#workspace">
-                Analize başla
+                Analize Başla
                 <span>→</span>
               </a>
 
@@ -141,13 +135,13 @@ function App() {
               </div>
 
               <div>
-                <strong>3</strong>
+                <strong>Dinamik</strong>
                 <span>Sprint planlaması</span>
               </div>
 
               <div>
                 <strong>AI</strong>
-                <span>Kaynaklı çıktılar</span>
+                <span>Referanslı Çıktılar</span>
               </div>
             </div>
           </div>
