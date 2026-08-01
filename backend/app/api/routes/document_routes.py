@@ -3,6 +3,7 @@
 from fastapi import APIRouter, Depends, File, HTTPException, UploadFile, status
 from sqlalchemy.ext.asyncio import AsyncSession
 from pydantic import BaseModel
+from typing import Optional # YENİ EKLENDİ
 
 from app.api.dependencies import get_db
 from app.schemas.document_schema import DocumentResponse, DocumentUploadResponse
@@ -19,6 +20,9 @@ class IdeaSelectRequest(BaseModel):
     title: str
     description: str
     aiContribution: str
+    teamSize: Optional[int] = 5
+    sprintCount: Optional[int] = 3
+    customRoles: Optional[str] = "Product Owner, Scrum Master, Developer"
 
 
 @router.post(
@@ -71,7 +75,7 @@ async def generate_sprint_plan(
     db: AsyncSession = Depends(get_db)
 ):
     """
-    Kullanıcının arayüzden seçtiği proje fikrini alıp yapay zekâya göndererek
+    Kullanıcının arayüzden seçtiği proje fikrini ve ayarlarını alıp yapay zekâya göndererek
     Sprint'lere, User Story'lere ve Task'lara bölünmüş detaylı planı döner.
     """
     try:
@@ -86,7 +90,7 @@ async def generate_sprint_plan(
             embedding_provider=embedding_provider
         )
         
-        # Seçilen fikri pipeline'a gönder
+        # Seçilen fikri VE ayarları pipeline'a gönder
         sprint_plan = await pipeline.execute(
             document_id=document_id,
             selected_idea=idea.model_dump()

@@ -37,24 +37,36 @@ class SprintPlanningPipeline:
 
     async def execute(self, document_id: int, selected_idea: dict) -> dict:
         """
-        Seçilen proje fikrini sabit kurallara göre sprintlere böler ve görevleri dağıtır.
+        Seçilen proje fikrini KULLANICI AYARLARINA göre sprintlere böler ve görevleri dağıtır.
         """
         
         idea_name = selected_idea.get('title', 'Belirtilmemiş Fikir')
         idea_description = selected_idea.get('description', '')
         
-        # Takım büyüklüğü (5) ve Sprint sayısı (3) doğrudan prompt içine entegre edildi
+        # Frontend'den gelen dinamik ayarları çekiyoruz (Yoksa varsayılanları kullan)
+        team_size = selected_idea.get('teamSize', 5)
+        sprint_count = selected_idea.get('sprintCount', 3)
+        custom_roles = selected_idea.get('customRoles', 'Product Owner, Scrum Master, Developer')
+        
         user_prompt = f"""
         Seçilen Proje Fikri:
         Adı: {idea_name}
         Açıklama: {idea_description}
 
-        Takım Büyüklüğü: 5 kişi
-        İstenen Toplam Sprint Sayısı: 3
+        Takım Büyüklüğü: {team_size} kişi
+        Takımdaki Roller: {custom_roles}
+        İstenen Toplam Sprint Sayısı: {sprint_count}
 
-        Lütfen bu projeyi tam olarak 3 sprint'e böl ve 5 kişilik bir ekibe uygun, adil bir görev dağılımı yap.
+        Lütfen bu projeyi tam olarak {sprint_count} sprint'e böl. 
+        Görevi yapacak sorumlu rolleri belirlerken SADECE yukarıda belirtilen "{custom_roles}" rollerinden seçim yap. Başka rol uydurma.
+        
+        KRİTİK VE ZORUNLU KURAL: "{custom_roles}" listesindeki HER BİR ROL, İSTİSNASIZ OLARAK HER SPRINT'TE en az bir göreve sahip olmalıdır. Sadece 'Developer' veya teknik rollere görev atayıp diğerlerini asla boş bırakma. 
+        Örneğin:
+        - Product Owner rolü varsa; backlog önceliklendirme, kullanıcı test senaryolarını onaylama, vizyon toplantıları gibi görevler yaz.
+        - Scrum Master rolü varsa; daily scrum yönetimi, teknik engellerin (blocker) kaldırılması, sprint retro'sunun yapılması gibi görevler yaz.
+        
+        Tüm rollerin, her sprint döngüsünde aktif olarak takımın bir parçası olmasını sağla!
         """
-
         # Groq LLM'i JSON formatında çağır
         raw_llm_output = await self.llm_provider.generate_structured(
             system_prompt=SPRINT_PLANNER_PROMPT,
