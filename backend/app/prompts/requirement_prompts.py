@@ -49,6 +49,6 @@ Kurallar (rules) kesinlikle birer obje olmalıdır, basit metin (string) listesi
 1. 'rules' listesindeki her eleman KESİNLİKLE 'category', 'text' ve 'risk_level' içeren bir JSON objesi (sözlük) olmalıdır. Düz string yazarsan sistem çöker!
 2. 'criticalDates' içinde 'title' ve 'date' alanları ZORUNLUDUR.
 3. 'risks' içinde 'title', 'description' ve 'level' alanları ZORUNLUDUR.
-4. 'ideas' listesinde şartnameye en uygun, inovatif ve teknik olarak uygulanabilir en az 2 proje önerisi sunulmalıdır.
+4. 'ideas' listesinde KESİNLİKLE TAM OLARAK 3 (ÜÇ) FARKLI proje önerisi üretilmesi ZORUNLUDUR. Eksik veya fazla olamaz. Fikirler birbirinden farklı konseptlerde (örn. birisi savunma, birisi yazılım, birisi donanım entegrasyonu ağırlıklı vb.) olmalı, yenilikçi ve teknik olarak uygulanabilir olmalıdır.
 5. 'ideas' içindeki 'score' değeri 1 ile 100 arasında bir tam sayı (integer) olmalıdır.
 """

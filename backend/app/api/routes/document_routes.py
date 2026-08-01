@@ -3,13 +3,14 @@
 from fastapi import APIRouter, Depends, File, HTTPException, UploadFile, status
 from sqlalchemy.ext.asyncio import AsyncSession
 from pydantic import BaseModel
-from typing import Optional # YENİ EKLENDİ
+from typing import Optional
 
 from app.api.dependencies import get_db
 from app.schemas.document_schema import DocumentResponse, DocumentUploadResponse
 from app.services.document_service import DocumentService
 
 from app.pipelines.sprint_planning_pipeline import SprintPlanningPipeline
+from app.pipelines.idea_generation_pipeline import IdeaGenerationPipeline # YENİ EKLENDİ
 from app.infrastructure.vector_store.pgvector_store import PGVectorStore
 from app.infrastructure.llm.llm_provider import GroqLLMProvider
 from app.infrastructure.embeddings.sentence_transformer_provider import SentenceTransformerProvider
@@ -79,7 +80,6 @@ async def generate_sprint_plan(
     Sprint'lere, User Story'lere ve Task'lara bölünmüş detaylı planı döner.
     """
     try:
-        # Pipeline bileşenlerini başlatıyoruz
         vector_store = PGVectorStore(db_session=db)
         llm_provider = GroqLLMProvider()
         embedding_provider = SentenceTransformerProvider()
@@ -90,7 +90,6 @@ async def generate_sprint_plan(
             embedding_provider=embedding_provider
         )
         
-        # Seçilen fikri VE ayarları pipeline'a gönder
         sprint_plan = await pipeline.execute(
             document_id=document_id,
             selected_idea=idea.model_dump()
@@ -103,4 +102,35 @@ async def generate_sprint_plan(
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, 
             detail="Sprint planı oluşturulurken bir hata oluştu."
+        )
+
+# YENİ EKLENEN ENDPOINT
+@router.post(
+    "/documents/{document_id}/regenerate-ideas",
+    status_code=status.HTTP_200_OK,
+    summary="Yalnızca şartnameye uygun 3 yeni fikir üretir"
+)
+async def regenerate_ideas(
+    document_id: int, 
+    db: AsyncSession = Depends(get_db)
+):
+    try:
+        vector_store = PGVectorStore(db_session=db)
+        llm_provider = GroqLLMProvider()
+        embedding_provider = SentenceTransformerProvider()
+        
+        pipeline = IdeaGenerationPipeline(
+            vector_store=vector_store,
+            llm_provider=llm_provider,
+            embedding_provider=embedding_provider
+        )
+        
+        new_ideas = await pipeline.execute(document_id=document_id)
+        return {"ideas": new_ideas}
+
+    except Exception as e:
+        print(f"Fikir Yenileme Hatası: {e}")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, 
+            detail="Yeni fikirler üretilirken bir hata oluştu."
         )

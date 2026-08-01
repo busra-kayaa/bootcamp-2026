@@ -45,7 +45,7 @@ class RequirementAnalysisResponse(BaseModel):
     criticalDates: List[CriticalDateSchema]
     rules: List[RuleSchema]
     risks: List[RiskSchema]
-    ideas: List[IdeaSchema] # 👈 Şemaya eklendi
+    ideas: List[IdeaSchema] = Field(..., description="Şartnameye uygun KESİNLİKLE VE TAM OLARAK 4 FARKLI proje fikri. Sayının tam olarak 4 olması zorunludur.") # 👈 Şema zorlaması eklendi
 
 # ---------------------------------------------------------
 # Ana Pipeline Sınıfı
@@ -93,7 +93,7 @@ class RequirementAnalysisPipeline:
         1. TARİHLER: Tarihler bir başlangıç ve bitiş aralığı içeriyorsa (Örn: 19 Haziran - 5 Temmuz), tarihi kesinlikle kırpma ve aralığın tamamını al.
         2. RİSKLER: Riskleri analiz ederken özellikle 'diskalifiye sebebi', 'yasak' veya 'elenme' gibi doğrudan projeyi başarısız kılacak kritik kuralları kesinlikle YÜKSEK öncelikli risk olarak belirle.
         3. KAYNAK GÖSTERİMİ: Kurallar, tarihler ve riskler için bulduğun her bilginin yanına mutlaka '[Kaynak ID: ...]' formatındaki chunk ID'sini ve sayfa numarasını ekle. Metinde yoksa asla uydurma.
-        4. FİKİRLER (IDEAS): Proje önerileri (ideas) tamamen senin mühendislik vizyonun ve sentezin olacağı için, fikirlerin açıklamasına (description) KESİNLİKLE sayfa numarası veya kaynak ID ekleme.
+        4. FİKİRLER (IDEAS): Proje önerileri (ideas) tamamen senin mühendislik vizyonun ve sentezin olacağı için, fikirlerin açıklamasına (description) KESİNLİKLE sayfa numarası veya kaynak ID ekleme. TAM OLARAK 3 FARKLI proje önerisi üret.
         """
 
         # 5. Groq LLM'i JSON formatında cevap üretmeye zorlayarak çağır
