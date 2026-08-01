@@ -5,9 +5,18 @@ function IdeaDetail({ idea, documentId, onBack }) {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
 
+  const [isConfigured, setIsConfigured] = useState(false);
+  const [teamSize, setTeamSize] = useState(5);
+  const [sprintCount, setSprintCount] = useState(3);
+  const [customRoles, setCustomRoles] = useState("Product Owner, Scrum Master, Developer");
+
+  const handleGeneratePlan = () => {
+    setIsConfigured(true);
+  };
+
   useEffect(() => {
-    // documentId veya idea yoksa istek atma
-    if (!idea || !documentId) return;
+    // isConfigured false ise (yani kullanıcı henüz ayarları onaylamadıysa) istek atma!
+    if (!idea || !documentId || !isConfigured) return;
 
     const fetchSprintPlan = async () => {
       setIsLoading(true);
@@ -19,7 +28,10 @@ function IdeaDetail({ idea, documentId, onBack }) {
           body: JSON.stringify({
             title: idea.title,
             description: idea.description,
-            aiContribution: idea.aiContribution || "Yapay zeka analiz ve önerisi"
+            aiContribution: idea.aiContribution || "Yapay zeka analiz ve önerisi",
+            teamSize: Number(teamSize),
+            sprintCount: Number(sprintCount),
+            customRoles: customRoles
           }),
         });
 
@@ -35,7 +47,7 @@ function IdeaDetail({ idea, documentId, onBack }) {
     };
 
     fetchSprintPlan();
-  }, [idea, documentId]);
+  }, [idea, documentId, isConfigured]); // isConfigured tetikleyici olarak eklendi
 
   if (!idea) return null;
 
@@ -99,10 +111,63 @@ function IdeaDetail({ idea, documentId, onBack }) {
              <span className="card-number">02</span>
              <span className="card-label">YOL HARİTASI</span>
              <h3 style={{ marginTop: '24px' }}>Sprint Planlaması</h3>
+
+             {/* YENİ: Ayarlar Formu (Sadece henüz yapılandırılmadıysa görünür) */}
+             {!isConfigured && (
+               <div style={{ marginTop: '24px', background: 'rgba(10, 23, 39, 0.4)', padding: '24px', borderRadius: '16px', border: '1px solid rgba(129, 148, 178, 0.15)' }}>
+                 <p style={{ color: '#b8c6d7', fontSize: '13px', marginBottom: '20px' }}>
+                   Planı oluşturmadan önce takımınızın yapısını ve sürecini belirleyin:
+                 </p>
+                 
+                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', marginBottom: '16px' }}>
+                   <div>
+                     <label style={{ display: 'block', color: '#8496ab', fontSize: '12px', marginBottom: '6px' }}>Takım Büyüklüğü (Kişi)</label>
+                     <input 
+                       type="number" 
+                       value={teamSize} 
+                       onChange={(e) => setTeamSize(e.target.value)}
+                       min="1" max="20"
+                       style={{ width: '100%', padding: '10px 12px', background: 'rgba(6, 17, 30, 0.5)', border: '1px solid rgba(126, 146, 177, 0.2)', borderRadius: '8px', color: '#e1e9f4' }}
+                     />
+                   </div>
+                   <div>
+                     <label style={{ display: 'block', color: '#8496ab', fontSize: '12px', marginBottom: '6px' }}>Sprint Sayısı</label>
+                     <input 
+                       type="number" 
+                       value={sprintCount} 
+                       onChange={(e) => setSprintCount(e.target.value)}
+                       min="1" max="10"
+                       style={{ width: '100%', padding: '10px 12px', background: 'rgba(6, 17, 30, 0.5)', border: '1px solid rgba(126, 146, 177, 0.2)', borderRadius: '8px', color: '#e1e9f4' }}
+                     />
+                   </div>
+                 </div>
+
+                 <div style={{ marginBottom: '24px' }}>
+                   <label style={{ display: 'block', color: '#8496ab', fontSize: '12px', marginBottom: '6px' }}>Takım Rolleri (Virgülle ayırın)</label>
+                   <input 
+                     type="text" 
+                     value={customRoles} 
+                     onChange={(e) => setCustomRoles(e.target.value)}
+                     style={{ width: '100%', padding: '10px 12px', background: 'rgba(6, 17, 30, 0.5)', border: '1px solid rgba(126, 146, 177, 0.2)', borderRadius: '8px', color: '#e1e9f4' }}
+                     placeholder="Örn: Frontend, Backend, UI/UX Tasarımcı"
+                   />
+                 </div>
+
+                 <button 
+                   onClick={handleGeneratePlan}
+                   style={{ width: '100%', background: '#65cba3', color: '#06111e', border: 'none', padding: '12px', borderRadius: '8px', fontWeight: 'bold', cursor: 'pointer', transition: 'opacity 0.2s' }}
+                   onMouseOver={(e) => e.currentTarget.style.opacity = '0.9'}
+                   onMouseOut={(e) => e.currentTarget.style.opacity = '1'}
+                 >
+                   Yapay Zekâ ile Planı Üret
+                 </button>
+               </div>
+             )}
              
+             {/* Yükleme, Hata ve Sprint Planı Listeleme (Eski kodun aynısı) */}
              {isLoading && (
                <div style={{ padding: '40px 0', textAlign: 'center', color: '#8191ff' }}>
-                 Yapay zekâ 5 kişilik takım için backlog ve sprint döngülerini kurguluyor. Lütfen bekleyin...
+                 Yapay zekâ {teamSize} kişilik takım için backlog ve {sprintCount} sprintlik döngüyü kurguluyor. Lütfen bekleyin...
                </div>
              )}
 
