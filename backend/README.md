@@ -2,7 +2,7 @@
 
 ## Kurulum ve çalıştırma
 
-Backend klasöründe Windows PowerShell ile aşağıdaki komutları çalıştırın:
+Backend klasöründe terminal ile aşağıdaki komutları çalıştırın:
 
 ```powershell
 python -m venv .venv
