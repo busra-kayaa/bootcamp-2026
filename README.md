@@ -3,14 +3,16 @@
 ## Takım İsmi
 Grup 57
 
-## Takım Rolleri
-* **Büşra KAYA:** Scrum Master
-* **Berk Yücedağ:** Product Owner
-* **Petek İrem Hızlı:** Developer
-* **Muhammed Ali Balcı:** Developer
+## Grup Üyeleri
 
-*(Not: Ekibimiz 4 kişiden oluşmaktadır. Product Owner ve Scrum Master rollerindeki takım üyeleri de proje yönetimi süreçlerinin yanı sıra aktif geliştirme sürecine dahil olmaktadır.)*
+| | İsim | Görev | Hesaplar |
+| :---: | :--- | :--- | :---: |
+| <img src="docs/images/image/busra_kaya.jpg" width="60" height="60"> | **Büşra KAYA** | Scrum Master | <a href="https://github.com/busra-kayaa"><img src="https://img.shields.io/badge/GitHub-100000?style=flat-square&logo=github&logoColor=white"></a> <a href="https://www.linkedin.com/in/b%C3%BC%C5%9Fra-kaya/"><img src="https://img.shields.io/badge/LinkedIn-0077B5?style=flat-square&logo=linkedin&logoColor=white"></a> |
+| <img src="docs/images/image/berk_yucedag.jpg" width="60" height="60"> | **Berk Yücedağ** | Product Owner | <a href="https://github.com/BerkYucedag"><img src="https://img.shields.io/badge/GitHub-100000?style=flat-square&logo=github&logoColor=white"></a> <a href="https://www.linkedin.com/in/berk-y%C3%BCceda%C4%9F-b35098247"><img src="https://img.shields.io/badge/LinkedIn-0077B5?style=flat-square&logo=linkedin&logoColor=white"></a> |
+| <img src="docs/images/image/petek_irem_hizli.jpg" width="60" height="60"> | **Petek İrem Hızlı** | Developer | <a href="https://github.com/petekiremhizli"><img src="https://img.shields.io/badge/GitHub-100000?style=flat-square&logo=github&logoColor=white"></a> <a href="https://www.linkedin.com/in/petek-irem-h%C4%B1zl%C4%B1"><img src="https://img.shields.io/badge/LinkedIn-0077B5?style=flat-square&logo=linkedin&logoColor=white"></a> |
+| <img src="docs/images/image/muhammed_ali_balci.jpg" width="60" height="60"> | **Muhammed Ali Balcı** | Developer | <a href="https://github.com/alibbalci"><img src="https://img.shields.io/badge/GitHub-100000?style=flat-square&logo=github&logoColor=white"></a> <a href="https://www.linkedin.com/in/alibbalci"><img src="https://img.shields.io/badge/LinkedIn-0077B5?style=flat-square&logo=linkedin&logoColor=white"></a> |
 
+> *Not: Ekibimiz 4 kişiden oluşmaktadır. Product Owner ve Scrum Master rollerindeki takım üyeleri de proje yönetimi süreçlerinin yanı sıra aktif geliştirme sürecine dahil olmaktadır.*
 ## Ürün İsmi
 SprintMate AI
 
@@ -18,12 +20,14 @@ SprintMate AI
 SprintMate AI, yarışma şartnamelerini analiz ederek takımlara proje fikri, backlog ve sprint planı oluşturan yapay zeka destekli bir planlama asistanıdır. Bu proje, bootcamp ve yarışma ekiplerinin uzun şartnameleri hızlıca anlamasını, kritik teslimleri kaçırmamasını ve seçilen proje fikrini uygulanabilir bir sprint planına dönüştürmesini sağlar.
 
 ## Ürün Özellikleri
-* **PDF / Doküman Yükleme:** Kullanıcılar yarışma şartnamesi, kılavuz, brief veya proje dökümanını uygulamaya yükler.
+* **PDF, Doküman ve Metin Yükleme:** Kullanıcılar yarışma şartnamesi, kılavuz veya proje dokümanını (PDF, DOCX, TXT) uygulamaya yükleyebilir ya da doğrudan metin olarak sisteme girebilir.
 * **Kritik Bilgi Çıkarımı:** Sistem metni işleyerek teslim tarihi, puanlama kriterleri, zorunlu kurallar, yasaklar ve dikkat noktalarını listeler.
 * **Proje Fikri Önerici:** Şartnameye tam uygun, yapılabilir ve yenilikçi proje fikirleri önerilir.
-* **Product Backlog & User Story Üretimi:** Seçilen fikre göre özellikler, görevler, öncelikler belirlenir ve user story listesi çıkarılır.
-* **Sprint Planlayıcı:** Üretilen görevler 3 sprintlik veya kullanıcının seçtiği süreye göre mantıklı bir şekilde bölünür.
+* **Dinamik Takım ve Rol Konfigürasyonu:** Kullanıcılar takımlarındaki kişi sayısını, planlanan sprint döngüsünü ve takımdaki spesifik rolleri (Örn: Scrum Master, QA, Frontend Developer) sisteme dinamik olarak tanımlayabilir.
+* **Product Backlog & User Story Üretimi:** Seçilen fikre ve girilen takım rollerine göre özellikler, görevler ve öncelikler belirlenerek yapılandırılmış bir user story listesi çıkarılır.
+* **Sprint Planlayıcı:** Üretilen görevler kullanıcının belirlediği sprint sayısına (Örn: 3, 4 veya 5 sprint) göre mantıklı ve bağımlılıkları gözetilerek bölünür.
 * **Risk Analizi:** Kapsam büyüklüğü, teknik risk, zaman riski ve demo riski gibi maddeler analiz edilerek önceden çıkarılır.
+* **Profesyonel Dışa Aktarma (Export):** Hazırlanan sprint planları, Jira/Trello gibi proje yönetim araçlarıyla tam uyumlu **CSV** formatında indirilebilir veya jüri/paydaş sunumları için temiz bir **PDF** raporu olarak kaydedilebilir.
 * **Dokümantasyon:** Proje için GitHub README, ürün açıklaması ve final demo anlatısı taslak olarak üretilir.
 
 ## Hedef Kitle
@@ -50,10 +54,10 @@ SprintMate AI frontend uygulaması, kullanıcıların doküman yüklemesini ve a
 * **Tarayıcıda açın:** `http://localhost:5173`
 * **Production Build için:** `npm run build`
 
-> **Not (Geçici Veri Kullanımı):** Backend entegrasyonu tamamlanana kadar, arayüzdeki analiz sonuçları `src/data/mockAnalysis.js` dosyasındaki örnek veriler üzerinden çalışmaktadır.
+> **Not:** Sistem tamamen uçtan uca (E2E) gerçek API ile entegre çalışmaktadır. Arayüzün sorunsuz veri çekebilmesi ve yapay zekâ analizlerini gösterebilmesi için Backend sunucusunun aktif olarak çalışıyor olması gerekmektedir.
 
 ### 2. Backend (API & Veritabanı) Kurulumu
-Projemiz, FastAPI altyapısı ve **Clean Architecture (Temiz Mimari)** prensipleri kullanılarak asenkron yapıda inşa edilmiştir.
+Projemiz, FastAPI altyapısı ve **Clean Architecture (Temiz Mimari)** prensipleri kullanılarak asenkron yapıda inşa edilmiştir. PDF ve DOCX gibi formatların yanı sıra düz metin girişleri de arka planda sanal belgelere dönüştürülerek pürüzsüz bir okuma (ingestion) sürecinden geçirilir.
 
 * **Klasöre girin:** `cd backend`
 * **Sanal ortam oluşturun ve aktif edin (Windows PowerShell):**
@@ -68,8 +72,6 @@ Projemiz, FastAPI altyapısı ve **Clean Architecture (Temiz Mimari)** prensiple
 * **Health Check Endpoint:** `http://127.0.0.1:8000/health`
 * **Swagger API Dokümantasyonu:** `http://127.0.0.1:8000/docs`
 * **Testleri çalıştırmak için:** `pytest`
-
----
 
 ## 📌 Sprint 1 Bilgileri (05 Temmuz 2026)
 
@@ -258,8 +260,118 @@ Projemiz, FastAPI altyapısı ve **Clean Architecture (Temiz Mimari)** prensiple
 
 ---
 
-## 📌 Sprint 3 / Entegrasyon ve Arayüz Eklemeleri (Ağustos 2026)
+## 📌 Sprint 3 / Entegrasyon ve Arayüz Eklemeleri (02 Ağustos 2026)
 
-**Son Geliştirmeler:**
-* **Gerçek API Entegrasyonu:** Arayüzdeki `mockAnalysis.js` geçici veri kaynağı devreden çıkarılarak, FastAPI backend servisine (`/api/v1/documents`) tam entegrasyon sağlandı. Arayüz artık yapay zeka analiz sonuçlarını gerçek zamanlı olarak sunucudan alıyor.
-* **Fikir Detay Ekranı (IdeaDetail):** Şartnameye uygun olarak üretilen proje fikirleri için **"Bu fikri seç"** özelliği arayüze eklendi. Fikir seçildiğinde projenin tasarım bütünlüğünü koruyarak açılan bu yeni sayfa, projenin bir sonraki aşaması olan dinamik Sprint Planlaması ve Backlog üretimi için gerekli arayüz altyapısını sunmaktadır.
+**Sprint Hedefi:** Geliştirilen backend ve yapay zekâ altyapısının arayüzle tam entegrasyonu (mock verilerden kurtulma), kullanıcıya dinamik planlama yeteneği kazandırılması ve üretilen planların sektör standartlarında (CSV ve profesyonel PDF) dışa aktarılabilir hale getirilmesi.
+
+### 📖 Kullanıcı Hikayeleri (User Stories)
+14. Bir kullanıcı olarak beğendiğim projenin detaylarına gitmek istiyorum, böylece sadece o fikre özel bir sprint planı ürettirebileyim.
+15. Bir takım lideri olarak takımımdaki kişi sayısını, sprint döngüsünü ve takımdaki spesifik rolleri (Örn: Scrum Master, QA, AI Engineer) sisteme girebilmek istiyorum, böylece planlama doğrudan benim ekibime özel yapılsın.
+16. Bir Scrum Master olarak hazırlanan sprint planını CSV formatında indirmek istiyorum, böylece görevleri Jira, Trello veya Asana gibi araçlara kolayca aktarabileyim.
+17. Bir Product Owner olarak sprint planını temiz, okunabilir ve profesyonel PDF olarak kaydetmek istiyorum, böylece jüriye veya paydaşlara sunabileyim.
+18. Bir Test Uzmanı (QA) olarak kod testleriyle ilgili görevlerin Developer'a değil doğrudan bana atanmasını istiyorum, böylece çevik (agile) kurallara tam uyan bir backlog görebileyim.
+
+### 📋 Product Backlog & Tamamlanan Görevler
+**Backend & İleri Düzey Prompt Mühendisliği**
+* **Task 23:** Yapay zekâ `SPRINT_PLANNER_PROMPT` kural setinin güncellenmesi; "5 kişilik takım / 3 sprint" gibi sabit değerlerin (hardcode) kaldırılarak frontend'den gelecek dinamik parametrelere uyumlu hale getirilmesi.
+* **Task 24:** LLM halüsinasyonlarını ve mantık hatalarını önlemek için kesin rol kısıtlamalarının (Role Mapping) prompta eklenmesi (Örn: Test görevlerinin *kesinlikle* Test Uzmanına atanması, arayüz işlerinin Frontend'e verilmesi).
+* **Task 25:** Pydantic şemaları (Structured Output) kullanılarak dil modelinin ürettiği User Story ve Task'ların JSON formatında hatasız bir şekilde doğrulanıp (validation) döndürülmesi.
+
+**Frontend & Dışa Aktarma (Export) Özellikleri**
+* **Task 26:** `IdeaDetail` bileşeninin kodlanması ve kullanıcıdan "Takım Büyüklüğü, Sprint Sayısı ve Takım Rolleri" girdilerini alacak form alanlarının eklenmesi.
+* **Task 27:** Üretilen Sprint Planını Excel ile tam uyumlu (sütun kaymalarını önleyen noktalı virgül `;` ayracı ve tırnak yönetimi ile) CSV formatında dışa aktarma (`exportToCSV`) fonksiyonunun yazılması.
+* **Task 28:** Arayüzdeki karanlık temanın (dark mode) yazdırma sırasında sorun yaratmasını önlemek adına `@media print` CSS kurallarının yazılması; kartların, yazıların ve arka planın profesyonel bir PDF raporu görünüme (beyaz arkaplan, siyah metin) kavuşturulması.
+
+### 🔍 Sprint 3 - Review Toplantısı
+* **Tarih:** 02 Ağustos 2026
+* **Tamamlanan İşler:**
+  - Mock veriler silindi, uçtan uca (End-to-End) gerçek API haberleşmesi sağlandı.
+  - Yapay zekâ dinamik parametreleri (kişi sayısı, özel roller) başarıyla işlemeye başladı ve mantıklı bağımlılıkları olan görevler üretti.
+  - CSV ve PDF export özellikleri test edildi, tam istenilen formatta dışa aktarım başarıldı.
+  - 422 ve 500 hatalarına yol açan metin girişi sorunu sanal DOCX dönüşümü ile giderildi.
+* **Karşılaşılan Sorunlar ve Çözümleri (Blockers):**
+  - *Sorun:* CSV dışa aktarılırken veriler Excel'de tek sütuna yığıldı.
+  - *Çözüm:* Sistemin Türkçe Excel formatına uyması için `,` (virgül) ayracı `;` (noktalı virgül) ile değiştirilerek sorun çözüldü.
+  - *Sorun:* Şartname metni doğrudan girildiğinde API 500 hatası fırlattı.
+  - *Çözüm:* Gelen metin arkada anında sanal bir Word (DOCX) belgesine dönüştürülerek mevcut dosya okuma altyapısına uyumlu hale getirildi.
+
+### 🔄 Sprint 3 - Retrospective Toplantısı
+* **Tarih:** 02 Ağustos 2026
+* **Neleri İyi Yaptık?**
+  - "Dışa aktarma (Export)" gibi başta planlanmayan ancak projeyi gerçek bir SaaS ürünü seviyesine taşıyan özellikleri hızlıca MVP'ye dahil ettik.
+  - Prompt Engineering teknikleriyle LLM'in otonom karar verme mantığını kontrol altına aldık.
+  - Karşılaşılan kritik bug'ları (salt-okunur hatası, validasyon hataları) soğukkanlılıkla ve yapısal değişikliklere gitmeden zekice çözdük.
+* **Aksiyon Planı:**
+  - Yazılım geliştirme süreci tamamlandığı için kodlar donduruldu (Code Freeze).
+  - Yarışma/Bootcamp jürisine sunulmak üzere, sistemin tüm yeteneklerini akıcı bir şekilde anlatan Demo Videosu çekilecek.
+
+### 📸 Görsel Kanıtlar (Sprint 3)
+
+<details>
+<summary><b>👉 Sprint 3 Görsellerini Görmek İçin Tıklayın</b></summary>
+
+<br>
+
+**1. Ürün Durumu (Final Arayüz ve Yapay Zekâ Analiz Çıktıları)**
+
+*Şartname Yükleme ve Metin Girişi Ekranları:*
+![Şartname Metin Girişi](docs/images/sprint3/urun.jpg)
+![PDF Yükleme](docs/images/sprint3/urun_3.jpg)
+
+*Nasıl Çalışır Bölümü:*
+![Nasıl Çalışır](docs/images/sprint3/urun_2.png)
+
+*AI Şartname Analiz Sonuçları (Özet, Tarihler, Kurallar):*
+![Analiz Sonuçları](docs/images/sprint3/urun_4.jpg)
+
+*AI Proje Fikri Önerileri ve Dinamik Seçim Ekranı:*
+![Proje Önerileri](docs/images/sprint3/urun_7.png)
+![Proje Önerileri Detay](docs/images/sprint3/urun_5.png)
+
+*AI Risk Analizi Tablosu:*
+![Risk Analizi](docs/images/sprint3/urun_8.png)
+
+**2. Dinamik Planlama, CSV ve PDF Çıktıları (Final Akış)**
+
+*Proje Fikri Detayı ve Dinamik Takım Konfigürasyonu (Özel Rol Atamaları):*
+![Fikir Detayı](docs/images/sprint3/urun_detay.jpg)
+![Takım ve Sprint Ayarları](docs/images/sprint3/urun_detay_3.jpg)
+
+*Yapay Zekâ Plan Üretim Süreci:*
+![Plan Yükleniyor](docs/images/sprint3/urun_detay_4.jpg)
+
+*Oluşturulan Dinamik Sprint Planı (Rol ve Öncelik Bazlı):*
+![Sprint Planı 1](docs/images/sprint3/sprint_detay.jpg)
+![Sprint Planı 2](docs/images/sprint3/sprint_detay1.png)
+
+*PDF Olarak Dışa Aktarma (Temiz Yazdırma Görünümü):*
+![PDF Çıktısı](docs/images/sprint3/pdf.jpg)
+
+*CSV İndirme ve Excel Sütun Ayrımı (Kusursuz Entegrasyon):*
+![İndirilen Dosyalar](docs/images/sprint3/dowloand.jpg)
+![Excel CSV Sonucu](docs/images/sprint3/csv.png)
+
+**3. Sprint Board (Görev Takip Panosu - Sprint 3 Final)**
+*Jira üzerinde Sprint 3 boyunca tamamlanan 35 işin (Done) ve güncel durumun görünümü. Geliştirme süreci tamamlanmış olup, kalan görevler yalnızca demo çekimi ve teslim işlemlerinden ibarettir:*
+![Sprint 3 Final Board](docs/images/sprint3/sprint_board.png)
+
+**4. Daily Scrum (Günlük Toplantı ve Takım İletişimi)**
+*Ekip içi senkronizasyon, arayüz düzeltmeleri, prompt mühendisliği tartışmaları ve anlık yardımlaşma süreçleri:*
+
+![Daily Scrum 1](docs/images/sprint3/daily_scrum1.jpeg)
+![Daily Scrum 2](docs/images/sprint3/daily_scrum2.jpeg)
+![Daily Scrum 3](docs/images/sprint3/daily_scrum3.jpeg)
+![Daily Scrum 4](docs/images/sprint3/daily_scrum4.jpeg)
+![Daily Scrum 5](docs/images/sprint3/daily_scrum5.jpeg)
+![Daily Scrum 6](docs/images/sprint3/daily_scrum6.jpeg)
+![Daily Scrum 7](docs/images/sprint3/daily_scrum7.jpeg)
+![Daily Scrum 8](docs/images/sprint3/daily_scrum8.jpeg)
+![Daily Scrum 9](docs/images/sprint3/daily_scrum9.jpeg)
+![Daily Scrum 10](docs/images/sprint3/daily_scrum10.jpeg)
+
+
+**5. Online Toplantı ve Koordinasyon**
+*25.07.2026 Tarihli Google Meet Sprint Değerlendirme Toplantısı:*
+![Meet Log 1](docs/images/sprint3/meet.png)
+
+</details>
