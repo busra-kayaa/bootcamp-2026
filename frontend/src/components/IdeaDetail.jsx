@@ -10,7 +10,6 @@ function IdeaDetail({ idea, documentId, onBack }) {
   const [sprintCount, setSprintCount] = useState(3);
   const [customRoles, setCustomRoles] = useState("Product Owner, Scrum Master, Developer");
 
-  // PDF çıktısında sadece sprint planını hedeflemek için bir ref oluşturuyoruz
   const printRef = useRef();
 
   const handleGeneratePlan = () => {
@@ -51,19 +50,17 @@ function IdeaDetail({ idea, documentId, onBack }) {
     fetchSprintPlan();
   }, [idea, documentId, isConfigured]);
 
-  // --- DIŞA AKTARMA (EXPORT) FONKSİYONLARI BAŞLANGICI --- //
+  // --- DIŞA AKTARMA (EXPORT) FONKSİYONLARI --- //
 
-  // 1. CSV'ye Çevir ve İndir (Jira, Trello veya Asana'ya Import Etmek İçin)
+  // 1. CSV'ye Çevir ve İndir (Sütun karmaşasını önleyen noktalı virgül ve tırnak yapısı)
   const exportToCSV = () => {
     if (!sprintPlan) return;
 
-    // CSV Sütun Başlıkları
     const headers = ["Sprint", "Hedef", "User Story", "Story Point", "Task", "Öncelik", "Sorumlu Rol"];
-    let csvContent = headers.join(",") + "\n";
+    let csvContent = headers.join(";") + "\n";
 
     sprintPlan.sprints.forEach(sprint => {
-      // Virgülleri bozmamak için metinleri çift tırnak içine alıyoruz
-      const cleanSprintName = `"${sprint.sprintName.replace(/"/g, '""')}"`;
+      const cleanSprintName = sprint.sprintName;
       const cleanGoal = `"${sprint.goal.replace(/"/g, '""')}"`;
 
       sprint.userStories.forEach(story => {
@@ -73,16 +70,23 @@ function IdeaDetail({ idea, documentId, onBack }) {
         story.tasks.forEach(task => {
           const cleanTaskTitle = `"${task.title.replace(/"/g, '""')}"`;
           const priority = task.priority;
-          const role = `"${task.responsible_role.replace(/"/g, '""')}"`;
+          const role = task.responsible_role;
 
-          // Satırı oluştur
-          const row = [cleanSprintName, cleanGoal, cleanStoryTitle, storyPoints, cleanTaskTitle, priority, role];
-          csvContent += row.join(",") + "\n";
+          const row = [
+            `"${cleanSprintName}"`, 
+            cleanGoal, 
+            cleanStoryTitle, 
+            storyPoints, 
+            cleanTaskTitle, 
+            priority, 
+            `"${role}"`
+          ];
+          
+          csvContent += row.join(";") + "\n";
         });
       });
     });
 
-    // Dosyayı oluştur ve indir (UTF-8 BOM ekleyerek Türkçe karakterleri koruyoruz)
     const blob = new Blob(["\uFEFF" + csvContent], { type: 'text/csv;charset=utf-8;' });
     const link = document.createElement("a");
     const url = URL.createObjectURL(blob);
@@ -94,12 +98,10 @@ function IdeaDetail({ idea, documentId, onBack }) {
     document.body.removeChild(link);
   };
 
-  // 2. PDF Olarak Yazdır (Tarayıcının yerleşik Print özelliğini kullanıyoruz)
+  // 2. PDF Olarak Yazdır
   const handlePrint = () => {
     window.print();
   };
-
-  // --- DIŞA AKTARMA (EXPORT) FONKSİYONLARI BİTİŞİ --- //
 
   if (!idea) return null;
 
@@ -108,7 +110,7 @@ function IdeaDetail({ idea, documentId, onBack }) {
       <section className="results-section">
         <button 
           onClick={onBack}
-          className="hide-on-print" // CSS ile yazdırırken gizlenecek class eklendi
+          className="hide-on-print"
           style={{
              background: 'rgba(17, 32, 51, 0.7)', 
              border: '1px solid rgba(129, 148, 178, 0.16)', 
@@ -160,65 +162,61 @@ function IdeaDetail({ idea, documentId, onBack }) {
             </div>
           </article>
           
-          {/* Yazdırılacak alanı işaretliyoruz */}
           <article className="result-card print-area" ref={printRef} style={{ minHeight: 'auto' }}>
-             
-             {/* BAŞLIK VE DIŞA AKTARMA BUTONLARI */}
              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '16px' }}>
-               <div>
-                 <span className="card-number">02</span>
-                 <span className="card-label">YOL HARİTASI</span>
-                 <h3 style={{ marginTop: '24px' }}>Sprint Planlaması</h3>
-               </div>
+                <div>
+                  <span className="card-number">02</span>
+                  <span className="card-label">YOL HARİTASI</span>
+                  <h3 style={{ marginTop: '24px' }}>Sprint Planlaması</h3>
+                </div>
 
-               {/* Veri yüklendiyse Export Butonlarını Göster */}
-               {sprintPlan && !isLoading && (
-                 <div className="hide-on-print" style={{ display: 'flex', gap: '12px', marginTop: '24px' }}>
-                   <button 
-                     onClick={exportToCSV}
-                     style={{
-                       background: 'rgba(101, 203, 163, 0.1)', 
-                       border: '1px solid rgba(101, 203, 163, 0.3)', 
-                       color: '#65cba3', 
-                       padding: '8px 16px', 
-                       borderRadius: '8px',
-                       cursor: 'pointer',
-                       fontSize: '12px',
-                       fontWeight: '600',
-                       display: 'flex',
-                       alignItems: 'center',
-                       gap: '6px',
-                       transition: 'all 0.2s ease'
-                     }}
-                     onMouseOver={(e) => e.currentTarget.style.background = 'rgba(101, 203, 163, 0.2)'}
-                     onMouseOut={(e) => e.currentTarget.style.background = 'rgba(101, 203, 163, 0.1)'}
-                   >
-                     📄 CSV İndir (Jira/Trello)
-                   </button>
+                {sprintPlan && !isLoading && (
+                  <div className="hide-on-print" style={{ display: 'flex', gap: '12px', marginTop: '24px' }}>
+                    <button 
+                      onClick={exportToCSV}
+                      style={{
+                        background: 'rgba(101, 203, 163, 0.1)', 
+                        border: '1px solid rgba(101, 203, 163, 0.3)', 
+                        color: '#65cba3', 
+                        padding: '8px 16px', 
+                        borderRadius: '8px',
+                        cursor: 'pointer',
+                        fontSize: '12px',
+                        fontWeight: '600',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '6px',
+                        transition: 'all 0.2s ease'
+                      }}
+                      onMouseOver={(e) => e.currentTarget.style.background = 'rgba(101, 203, 163, 0.2)'}
+                      onMouseOut={(e) => e.currentTarget.style.background = 'rgba(101, 203, 163, 0.1)'}
+                    >
+                      📄 CSV İndir (Jira/Trello)
+                    </button>
 
-                   <button 
-                     onClick={handlePrint}
-                     style={{
-                       background: 'rgba(129, 145, 255, 0.1)', 
-                       border: '1px solid rgba(129, 145, 255, 0.3)', 
-                       color: '#8191ff', 
-                       padding: '8px 16px', 
-                       borderRadius: '8px',
-                       cursor: 'pointer',
-                       fontSize: '12px',
-                       fontWeight: '600',
-                       display: 'flex',
-                       alignItems: 'center',
-                       gap: '6px',
-                       transition: 'all 0.2s ease'
-                     }}
-                     onMouseOver={(e) => e.currentTarget.style.background = 'rgba(129, 145, 255, 0.2)'}
-                     onMouseOut={(e) => e.currentTarget.style.background = 'rgba(129, 145, 255, 0.1)'}
-                   >
-                     🖨️ PDF Dışa Aktar
-                   </button>
-                 </div>
-               )}
+                    <button 
+                      onClick={handlePrint}
+                      style={{
+                        background: 'rgba(129, 145, 255, 0.1)', 
+                        border: '1px solid rgba(129, 145, 255, 0.3)', 
+                        color: '#8191ff', 
+                        padding: '8px 16px', 
+                        borderRadius: '8px',
+                        cursor: 'pointer',
+                        fontSize: '12px',
+                        fontWeight: '600',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '6px',
+                        transition: 'all 0.2s ease'
+                      }}
+                      onMouseOver={(e) => e.currentTarget.style.background = 'rgba(129, 145, 255, 0.2)'}
+                      onMouseOut={(e) => e.currentTarget.style.background = 'rgba(129, 145, 255, 0.1)'}
+                    >
+                      🖨️ PDF Dışa Aktar
+                    </button>
+                  </div>
+                )}
              </div>
 
              {!isConfigured && (
@@ -325,13 +323,52 @@ function IdeaDetail({ idea, documentId, onBack }) {
 
       <style>{`
         @media print {
-          body { background: white; color: black; }
-          .hide-on-print, nav, footer, .ambient, .background-grid { display: none !important; }
-          .idea-detail-page { padding: 0 !important; }
-          .result-card { border: none !important; background: none !important; box-shadow: none !important; padding: 0 !important; }
-          .print-sprint-card { page-break-inside: avoid; border: 1px solid #ddd !important; background: #fff !important; margin-bottom: 20px !important; }
-          h2, h3, h4, p, span, strong { color: black !important; }
-          .score-badge { display: none !important; }
+          html, body { 
+            background: #ffffff !important; 
+            color: #000000 !important; 
+            -webkit-print-color-adjust: exact !important;
+            print-color-adjust: exact !important;
+          }
+          
+          .hide-only-print, nav, footer, button, .hide-on-print { 
+            display: none !important; 
+          }
+
+          .idea-detail-page { 
+            padding: 0 !important; 
+            margin: 0 !important;
+            background: #ffffff !important;
+          }
+
+          .result-card, 
+          .result-card--summary, 
+          .print-area { 
+            border: none !important; 
+            background: #ffffff !important; 
+            box-shadow: none !important; 
+            padding: 10px !important; 
+          }
+
+          .print-sprint-card { 
+            page-break-inside: avoid !important; 
+            border: 1px solid #cbd5e1 !important; 
+            background: #f8fafc !important; 
+            margin-bottom: 16px !important; 
+            padding: 16px !important;
+            border-radius: 8px !important;
+          }
+
+          .print-sprint-card li, div {
+            background-color: transparent !important;
+          }
+
+          h2, h3, h4, p, strong, span, li, label { 
+            color: #1e293b !important; 
+          }
+          
+          .score-badge { 
+            display: none !important; 
+          }
         }
       `}</style>
     </main>
