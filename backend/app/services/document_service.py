@@ -3,8 +3,8 @@ import uuid
 import tempfile
 from datetime import datetime
 from sqlalchemy.ext.asyncio import AsyncSession
+import docx  
 
-# Kendi modellerinizi import ettiğiniz yer (Proje yapınıza göre güncelleyebilirsiniz)
 from app.models import Document, DocumentChunk
 
 from app.pipelines.requirement_analysis_pipeline import RequirementAnalysisPipeline
@@ -51,19 +51,25 @@ class DocumentService:
             await self.db.commit() 
 
             # ---------------------------------------------------------
-            # 2. ADIM: PDF'İ OKU VE METNİ ÇIKAR
+            # 2. ADIM: PDF VEYA DOCX OKU VE METNİ ÇIKAR (DÜZELTİLEN KISIM)
             # ---------------------------------------------------------
             extracted_pages = []
             
             if file:
-                with tempfile.NamedTemporaryFile(delete=False, suffix=".pdf") as tmp:
+                with tempfile.NamedTemporaryFile(delete=False, suffix=os.path.splitext(filename)[1]) as tmp:
                     content = await file.read()
                     tmp.write(content)
                     tmp_path = tmp.name
 
                 try:
-                    extractor = PdfPlumberExtractor()
-                    extracted_pages = extractor.extract(tmp_path)
+                    # Dosya uzantısına göre okuyucu seçimi yapıyoruz!
+                    if filename.lower().endswith('.docx'):
+                        doc = docx.Document(tmp_path)
+                        full_text = "\n".join([para.text for para in doc.paragraphs])
+                        extracted_pages = [{"page_number": 1, "text": full_text, "extraction_method": "docx_extractor"}]
+                    else:
+                        extractor = PdfPlumberExtractor()
+                        extracted_pages = extractor.extract(tmp_path)
                 finally:
                     if os.path.exists(tmp_path):
                         os.remove(tmp_path)
@@ -127,7 +133,7 @@ class DocumentService:
 
             return {
                 "message": "Şartname yapay zekâ tarafından başarıyla analiz edildi",
-                "documentId": actual_document_id, # 👈 YENİ EKLENEN SATIR (Frontend bağlantısı için şart!)
+                "documentId": actual_document_id, 
                 "sourceName": filename,
                 "summary": ai_result.get("summary", ""),
                 "criticalDates": ai_result.get("criticalDates", []),

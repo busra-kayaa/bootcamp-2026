@@ -1,6 +1,9 @@
 """Document management routes."""
 
-from fastapi import APIRouter, Depends, File, HTTPException, UploadFile, status
+import io
+from docx import Document
+from starlette.datastructures import Headers
+from fastapi import APIRouter, Depends, File, Form, HTTPException, UploadFile, status
 from sqlalchemy.ext.asyncio import AsyncSession
 from pydantic import BaseModel
 from typing import Optional
@@ -10,7 +13,7 @@ from app.schemas.document_schema import DocumentResponse, DocumentUploadResponse
 from app.services.document_service import DocumentService
 
 from app.pipelines.sprint_planning_pipeline import SprintPlanningPipeline
-from app.pipelines.idea_generation_pipeline import IdeaGenerationPipeline # YENİ EKLENDİ
+from app.pipelines.idea_generation_pipeline import IdeaGenerationPipeline
 from app.infrastructure.vector_store.pgvector_store import PGVectorStore
 from app.infrastructure.llm.llm_provider import GroqLLMProvider
 from app.infrastructure.embeddings.sentence_transformer_provider import SentenceTransformerProvider
@@ -30,16 +33,36 @@ class IdeaSelectRequest(BaseModel):
     "/documents",
     response_model=DocumentUploadResponse,
     status_code=status.HTTP_201_CREATED,
-    summary="Yeni doküman yükle",
+    summary="Yeni doküman yükle veya metin gir",
 )
 async def upload_document(
-    file: UploadFile = File(...),
+    file: Optional[UploadFile] = File(None),
+    text: Optional[str] = Form(None),
     db: AsyncSession = Depends(get_db),
 ):
     """
-    Sisteme PDF, DOCX veya TXT formatında doküman yükler.
+    Sisteme PDF, DOCX veya TXT formatında doküman yükler ya da doğrudan metin alır.
     Arka plan analizi için otomatik bir Job oluşturur.
     """
+    if not file and not text:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Lütfen bir doküman yükleyin veya şartname metnini girin."
+        )
+
+    # Gelen metni anında sanal bir DOCX (Word) dosyasına çeviriyoruz!
+    if text and not file:
+        doc = Document()
+        doc.add_paragraph(text)
+        
+        file_obj = io.BytesIO()
+        doc.save(file_obj)
+        file_obj.seek(0)
+        
+        headers = Headers({"content-type": "application/vnd.openxmlformats-officedocument.wordprocessingml.document"})
+        file = UploadFile(filename="manuel_girilen_sartname.docx", file=file_obj, headers=headers)
+
+    # Artık elimizde her halükarda geçerli bir 'file' var.
     service = DocumentService(db)
     result = await service.process_upload(file)
     return result
@@ -104,7 +127,7 @@ async def generate_sprint_plan(
             detail="Sprint planı oluşturulurken bir hata oluştu."
         )
 
-# YENİ EKLENEN ENDPOINT
+
 @router.post(
     "/documents/{document_id}/regenerate-ideas",
     status_code=status.HTTP_200_OK,
