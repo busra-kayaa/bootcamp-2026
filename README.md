@@ -315,14 +315,14 @@ Projemiz, FastAPI altyapısı ve **Clean Architecture (Temiz Mimari)** prensiple
 **1. Ürün Durumu (Final Arayüz ve Yapay Zekâ Analiz Çıktıları)**
 
 *Şartname Yükleme ve Metin Girişi Ekranları:*
-![Şartname Metin Girişi](docs/images/sprint3/urun.jpg)
-![PDF Yükleme](docs/images/sprint3/urun_3.jpg)
+![Şartname Metin Girişi](docs/images/sprint3/urun.png)
+![PDF Yükleme](docs/images/sprint3/urun_3.png)
 
 *Nasıl Çalışır Bölümü:*
 ![Nasıl Çalışır](docs/images/sprint3/urun_2.png)
 
 *AI Şartname Analiz Sonuçları (Özet, Tarihler, Kurallar):*
-![Analiz Sonuçları](docs/images/sprint3/urun_4.jpg)
+![Analiz Sonuçları](docs/images/sprint3/urun_4.png)
 
 *AI Proje Fikri Önerileri ve Dinamik Seçim Ekranı:*
 ![Proje Önerileri](docs/images/sprint3/urun_7.png)
@@ -334,21 +334,21 @@ Projemiz, FastAPI altyapısı ve **Clean Architecture (Temiz Mimari)** prensiple
 **2. Dinamik Planlama, CSV ve PDF Çıktıları (Final Akış)**
 
 *Proje Fikri Detayı ve Dinamik Takım Konfigürasyonu (Özel Rol Atamaları):*
-![Fikir Detayı](docs/images/sprint3/urun_detay.jpg)
-![Takım ve Sprint Ayarları](docs/images/sprint3/urun_detay_3.jpg)
+![Fikir Detayı](docs/images/sprint3/urun_detay.png)
+![Takım ve Sprint Ayarları](docs/images/sprint3/urun_detay_3.png)
 
 *Yapay Zekâ Plan Üretim Süreci:*
-![Plan Yükleniyor](docs/images/sprint3/urun_detay_4.jpg)
+![Plan Yükleniyor](docs/images/sprint3/urun_detay_4.png)
 
 *Oluşturulan Dinamik Sprint Planı (Rol ve Öncelik Bazlı):*
-![Sprint Planı 1](docs/images/sprint3/sprint_detay.jpg)
+![Sprint Planı 1](docs/images/sprint3/sprint_detay.png)
 ![Sprint Planı 2](docs/images/sprint3/sprint_detay1.png)
 
 *PDF Olarak Dışa Aktarma (Temiz Yazdırma Görünümü):*
-![PDF Çıktısı](docs/images/sprint3/pdf.jpg)
+![PDF Çıktısı](docs/images/sprint3/pdf.png)
 
 *CSV İndirme ve Excel Sütun Ayrımı (Kusursuz Entegrasyon):*
-![İndirilen Dosyalar](docs/images/sprint3/dowloand.jpg)
+![İndirilen Dosyalar](docs/images/sprint3/dowloand.png)
 ![Excel CSV Sonucu](docs/images/sprint3/csv.png)
 
 **3. Sprint Board (Görev Takip Panosu - Sprint 3 Final)**
